@@ -15,6 +15,7 @@ Provides REST API for communication between client applications and database.
   - [MonoDevelop](https://www.monodevelop.com/download/)
 
 
+### Step-by-step guide
 1. Clone the repo
 ```shell
 git clone git@gitlab.com:mytraveljournal/api.git
@@ -48,6 +49,9 @@ dotnet run
 ```
 
 ## Used technologies
+- .NET 6
+- Entity Framework
+- PostgreSQL
 
 ## Additional resources
 
