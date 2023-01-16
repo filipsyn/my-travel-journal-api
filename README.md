@@ -51,6 +51,7 @@ dotnet run
 ## Used technologies
 - .NET 6
 - Entity Framework
+- Docker
 - PostgreSQL
 
 ## Additional resources
