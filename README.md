@@ -55,5 +55,6 @@ dotnet run
 - PostgreSQL
 
 ## Additional resources
+- [Endpoints documentation](docs/endpoints.md)
 
 
