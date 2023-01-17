@@ -3,33 +3,33 @@ API Endpoints
 
 - **Global URL prefix:** `/api/`
 
-# User
+## User
 
 - **URL prefix:** `/user/`
 
-## Get All Users
+### Get All Users
 
 - **URL:** `/`
 - **Method:** `GET`
 - **Requirements to access**
     - Admin Role
 
-## Create New User
+### Create New User
 
 - **URL:** `/`
 - **Method:** `POST`
 
-## Get User By ID
+### Get User By ID
 
 - **URL:** `/{id}/`
 - **Method:** `GET`
 
-## Update User Information
+### Update User Information
 
 - **URL:** `/{id}/`
 - **Method:** `PATCH`
 
-## Delete User
+### Delete User
 
 - **URL:** `/{id}`
 - **Method:** `DELETE`
