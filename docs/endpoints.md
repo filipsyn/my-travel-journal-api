@@ -1,5 +1,4 @@
-API Endpoints
--------------
+# API Endpoints
 
 - **Global URL prefix:** `/api/`
 
