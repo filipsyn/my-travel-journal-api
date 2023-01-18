@@ -1,0 +1,14 @@
+version: '3'
+services: 
+  db:
+    container_name: 'mytraveljournal-postgres'
+    image: postgres:alpine
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./pgdata/:/var/lib/postgresql/data/
+    env_file:
+      - .env
+volumes: 
+  db:
