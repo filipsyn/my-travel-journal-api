@@ -30,13 +30,11 @@ public class UserController : ControllerBase
     [Route(Endpoints.User.DeleteUser)]
     public void DeleteUser(int id)
     {
-
     }
 
     [HttpPatch]
     [Route(Endpoints.User.UpdateUser)]
     public void UpdateUser(int id)
     {
-        
     }
 }
