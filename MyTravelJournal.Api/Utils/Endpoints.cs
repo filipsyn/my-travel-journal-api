@@ -4,14 +4,16 @@ public static class Endpoints
 {
     public static class User
     {
-        public const string GetAllUsers = "/api/user";
+        public const string ControllerUrl = "/api/user";
 
-        public const string GetUser = "/api/user/{id:int}";
+        public const string GetAllUsers = "";
 
-        public const string CreateUser = "/api/user/";
+        public const string GetUserById = "{id:int}";
 
-        public const string DeleteUser = "/api/user/{id:int}";
+        public const string CreateUser = "";
 
-        public const string UpdateUser = "/api/user/{id:int}";
+        public const string DeleteUser = "{id:int}";
+
+        public const string UpdateUser = "{id:int}";
     }
 }

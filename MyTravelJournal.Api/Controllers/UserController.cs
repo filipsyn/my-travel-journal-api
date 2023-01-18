@@ -4,36 +4,32 @@ using MyTravelJournal.Api.Utils;
 namespace MyTravelJournal.Api.Controllers;
 
 [ApiController]
+[Route(Endpoints.User.ControllerUrl)]
 public class UserController : ControllerBase
 {
-    [HttpGet]
-    [Route(Endpoints.User.GetAllUsers)]
+    [HttpGet(Endpoints.User.GetAllUsers)]
     public List<string> GetAllUsers()
     {
         return new List<string>() { "User", "John" };
     }
 
-    [HttpGet]
-    [Route(Endpoints.User.GetUser)]
-    public string GetUser()
+    [HttpGet(Endpoints.User.GetUserById)]
+    public string GetUserById(int id)
     {
         return "Sample user";
     }
 
-    [HttpPost]
-    [Route(Endpoints.User.CreateUser)]
+    [HttpPost(Endpoints.User.CreateUser)]
     public void CreateUser()
     {
     }
 
-    [HttpDelete]
-    [Route(Endpoints.User.DeleteUser)]
+    [HttpDelete(Endpoints.User.DeleteUser)]
     public void DeleteUser(int id)
     {
     }
 
-    [HttpPatch]
-    [Route(Endpoints.User.UpdateUser)]
+    [HttpPatch(Endpoints.User.UpdateUser)]
     public void UpdateUser(int id)
     {
     }
