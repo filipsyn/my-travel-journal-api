@@ -19,4 +19,24 @@ public class UserController : ControllerBase
     {
         return "Sample user";
     }
+
+    [HttpPost]
+    [Route(Endpoints.User.CreateUser)]
+    public void CreateUser()
+    {
+    }
+
+    [HttpDelete]
+    [Route(Endpoints.User.DeleteUser)]
+    public void DeleteUser(int id)
+    {
+
+    }
+
+    [HttpPatch]
+    [Route(Endpoints.User.UpdateUser)]
+    public void UpdateUser(int id)
+    {
+        
+    }
 }
