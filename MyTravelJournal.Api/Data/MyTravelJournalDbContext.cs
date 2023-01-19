@@ -3,9 +3,9 @@ using MyTravelJournal.Api.Models;
 
 namespace MyTravelJournal.Api.Data;
 
-public class MtjDbContext : DbContext
+public class MyTravelJournalDbContext : DbContext
 {
-    public MtjDbContext(DbContextOptions<MtjDbContext> options) : base(options)
+    public MyTravelJournalDbContext(DbContextOptions<MyTravelJournalDbContext> options) : base(options)
     {
     }
 

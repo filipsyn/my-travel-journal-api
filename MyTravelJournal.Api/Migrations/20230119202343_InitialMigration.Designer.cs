@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyTravelJournal.Api.Migrations
 {
-    [DbContext(typeof(MtjDbContext))]
+    [DbContext(typeof(MyTravelJournalDbContext))]
     [Migration("20230119202343_InitialMigration")]
     partial class InitialMigration
     {

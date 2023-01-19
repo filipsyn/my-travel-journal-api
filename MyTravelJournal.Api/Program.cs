@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen(options =>
     }
 );
 
-builder.Services.AddDbContext<MtjDbContext>(options =>
+builder.Services.AddDbContext<MyTravelJournalDbContext>(options =>
     options.UseNpgsql(connectionString)
 );
 
