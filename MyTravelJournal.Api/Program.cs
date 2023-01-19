@@ -1,8 +1,18 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using MyTravelJournal.Api.Data;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Adding password to connection string
+// Value is saved in the .NET secrets vault
+var connectionStringBuilder =
+    new NpgsqlConnectionStringBuilder(builder.Configuration.GetConnectionString("MyTravelJournal"))
+    {
+        Password = builder.Configuration["DbPassword"],
+    };
+var connectionString = connectionStringBuilder.ConnectionString;
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -16,6 +26,11 @@ builder.Services.AddSwaggerGen(options =>
         });
     }
 );
+
+builder.Services.AddDbContext<MtjDbContext>(options =>
+    options.UseNpgsql(connectionString)
+);
+
 
 var app = builder.Build();
 
