@@ -20,14 +20,13 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Endpoints.User.GetAllUsers)]
-    public async Task<ActionResult<List<GetAllUsersDto>>> GetAllUsers()
+    public async Task<ActionResult<List<UserDetailsDto>>> GetAllUsers()
     {
         var users = _db.Users;
         if (users == null)
             return NoContent();
 
-        var list = await users
-            .Select(u => new GetAllUsersDto
+        var list = await users.Select(u => new UserDetailsDto
             {
                 UserId = u.UserId,
                 Username = u.Username,

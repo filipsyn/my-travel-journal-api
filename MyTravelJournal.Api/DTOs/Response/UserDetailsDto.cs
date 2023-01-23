@@ -1,6 +1,6 @@
 namespace MyTravelJournal.Api.DTOs.Response;
 
-public record GetAllUsersDto
+public record UserDetailsDto
 {
     public int UserId { get; init; }
     public string FirstName { get; init; } = string.Empty;
