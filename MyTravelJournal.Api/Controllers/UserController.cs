@@ -40,7 +40,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Endpoints.User.GetUserById)]
-    public async Task<ActionResult<User>> GetUserById(int id)
+    public async Task<ActionResult<UserDetailsDto>> GetUserById(int id)
     {
         var users = _db.Users;
         if (users is null) return NoContent();
