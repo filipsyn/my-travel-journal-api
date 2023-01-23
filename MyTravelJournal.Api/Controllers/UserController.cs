@@ -8,29 +8,32 @@ namespace MyTravelJournal.Api.Controllers;
 public class UserController : ControllerBase
 {
     [HttpGet(Endpoints.User.GetAllUsers)]
-    public List<string> GetAllUsers()
+    public ActionResult<List<string>> GetAllUsers()
     {
-        return new List<string>() { "User", "John" };
+        return Ok(new List<string>() { "User", "John" });
     }
 
     [HttpGet(Endpoints.User.GetUserById)]
-    public string GetUserById(int id)
+    public ActionResult<string> GetUserById(int id)
     {
-        return "Sample user";
+        return Ok("Sample user");
     }
 
     [HttpPost(Endpoints.User.CreateUser)]
-    public void CreateUser()
+    public ActionResult CreateUser()
     {
+        return Ok("Created");
     }
 
     [HttpDelete(Endpoints.User.DeleteUser)]
-    public void DeleteUser(int id)
+    public ActionResult DeleteUser(int id)
     {
+        return Ok("Deleted");
     }
 
     [HttpPatch(Endpoints.User.UpdateUser)]
-    public void UpdateUser(int id)
+    public ActionResult UpdateUser(int id)
     {
+        return Ok("Updated");
     }
 }
