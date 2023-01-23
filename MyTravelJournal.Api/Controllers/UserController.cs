@@ -45,7 +45,16 @@ public class UserController : ControllerBase
         var users = _db.Users;
         if (users is null) return NoContent();
 
-        var result = await users.FirstOrDefaultAsync(u => u.UserId == id);
+        var result = await users.Select(u => new UserDetailsDto
+            {
+                UserId = u.UserId,
+                Username = u.Username,
+                Email = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+            })
+            .FirstOrDefaultAsync(u => u.UserId == id);
+
         if (result is null)
             return NotFound();
 
