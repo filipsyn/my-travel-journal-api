@@ -7,6 +7,13 @@ namespace MyTravelJournal.Api.Controllers;
 [Route(Endpoints.User.ControllerUrl)]
 public class UserController : ControllerBase
 {
+    private readonly MyTravelJournalDbContext _db;
+
+    public UserController(MyTravelJournalDbContext db)
+    {
+        _db = db;
+    }
+
     [HttpGet(Endpoints.User.GetAllUsers)]
     public ActionResult<List<string>> GetAllUsers()
     {
