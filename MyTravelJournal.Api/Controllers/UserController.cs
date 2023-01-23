@@ -20,10 +20,12 @@ public class UserController : ControllerBase
     [HttpGet(Endpoints.User.GetAllUsers)]
     public async Task<ActionResult<List<User>>> GetAllUsers()
     {
-        if (_db.Users == null) return NoContent();
+        var users = _db.Users;
+        if (users == null)
+            return NoContent();
 
-        var users = await _db.Users.ToListAsync();
-        return Ok(users);
+        var result = await users.ToListAsync();
+        return Ok(result);
     }
 
     [HttpGet(Endpoints.User.GetUserById)]
