@@ -56,9 +56,20 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete(Endpoints.User.DeleteUser)]
-    public ActionResult DeleteUser(int id)
+    public async Task<ActionResult<User>> DeleteUser(int id)
     {
-        return Ok("Deleted");
+        var users = _db.Users;
+        if (users is null)
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+
+        var result = await users.FirstOrDefaultAsync(u => u.UserId == id);
+        if (result is null)
+            return NotFound();
+
+        users.Remove(result);
+        await _db.SaveChangesAsync();
+
+        return Ok(result);
     }
 
     [HttpPatch(Endpoints.User.UpdateUser)]
