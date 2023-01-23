@@ -43,9 +43,16 @@ public class UserController : ControllerBase
     }
 
     [HttpPost(Endpoints.User.CreateUser)]
-    public ActionResult CreateUser()
+    public async Task<ActionResult<User>> CreateUser([FromBody] User newUser)
     {
-        return Ok("Created");
+        var users = _db.Users;
+        if (users is null)
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+
+        users.Add(newUser);
+        await _db.SaveChangesAsync();
+
+        return Ok(newUser);
     }
 
     [HttpDelete(Endpoints.User.DeleteUser)]
