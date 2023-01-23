@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MyTravelJournal.Api.Data;
+using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Utils;
 
 namespace MyTravelJournal.Api.Controllers;
@@ -15,9 +18,12 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Endpoints.User.GetAllUsers)]
-    public ActionResult<List<string>> GetAllUsers()
+    public async Task<ActionResult<List<User>>> GetAllUsers()
     {
-        return Ok(new List<string>() { "User", "John" });
+        if (_db.Users == null) return NoContent();
+
+        var users = await _db.Users.ToListAsync();
+        return Ok(users);
     }
 
     [HttpGet(Endpoints.User.GetUserById)]
