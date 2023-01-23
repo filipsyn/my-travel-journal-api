@@ -27,9 +27,16 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Endpoints.User.GetUserById)]
-    public ActionResult<string> GetUserById(int id)
+    public async Task<ActionResult<User>> GetUserById(int id)
     {
-        return Ok("Sample user");
+        var users = _db.Users;
+        if (users is null) return NoContent();
+
+        var result = await users.FirstOrDefaultAsync(u => u.UserId == id);
+        if (result is null)
+            return NotFound();
+
+        return Ok(result);
     }
 
     [HttpPost(Endpoints.User.CreateUser)]
