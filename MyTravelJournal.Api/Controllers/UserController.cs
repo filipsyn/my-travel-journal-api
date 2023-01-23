@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Data;
+using MyTravelJournal.Api.DTOs.Response;
 using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Utils;
 
@@ -19,14 +20,24 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Endpoints.User.GetAllUsers)]
-    public async Task<ActionResult<List<User>>> GetAllUsers()
+    public async Task<ActionResult<List<GetAllUsersDto>>> GetAllUsers()
     {
         var users = _db.Users;
         if (users == null)
             return NoContent();
 
-        var result = await users.ToListAsync();
-        return Ok(result);
+        var list = await users
+            .Select(u => new GetAllUsersDto
+            {
+                UserId = u.UserId,
+                Username = u.Username,
+                Email = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+            })
+            .ToListAsync();
+
+        return Ok(list);
     }
 
     [HttpGet(Endpoints.User.GetUserById)]
