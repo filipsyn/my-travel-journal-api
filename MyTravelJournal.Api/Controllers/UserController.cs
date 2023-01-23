@@ -8,6 +8,7 @@ namespace MyTravelJournal.Api.Controllers;
 
 [ApiController]
 [Route(Endpoints.User.ControllerUrl)]
+[Produces("application/json")]
 public class UserController : ControllerBase
 {
     private readonly MyTravelJournalDbContext _db;
