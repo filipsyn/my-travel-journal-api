@@ -1,4 +1,4 @@
-namespace MyTravelJournal.Api.DTOs.Response;
+namespace MyTravelJournal.Api.DTOs;
 
 public record UserDetailsDto
 {

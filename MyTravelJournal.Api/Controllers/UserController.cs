@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Data;
-using MyTravelJournal.Api.DTOs.Response;
+using MyTravelJournal.Api.DTOs;
 using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Utils;
 
