@@ -39,4 +39,8 @@
       <None Remove="pgdata\**" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="DTOs\Request" />
+    </ItemGroup>
+
 </Project>
