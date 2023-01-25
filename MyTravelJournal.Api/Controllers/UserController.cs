@@ -1,3 +1,5 @@
+using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Data;
@@ -13,10 +15,12 @@ namespace MyTravelJournal.Api.Controllers;
 public class UserController : ControllerBase
 {
     private readonly MyTravelJournalDbContext _db;
+    private readonly IMapper _mapper;
 
-    public UserController(MyTravelJournalDbContext db)
+    public UserController(MyTravelJournalDbContext db, IMapper mapper)
     {
         _db = db;
+        _mapper = mapper;
     }
 
     [HttpGet(Endpoints.User.GetAllUsers)]
