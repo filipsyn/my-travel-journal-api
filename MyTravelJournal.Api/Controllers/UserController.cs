@@ -102,8 +102,37 @@ public class UserController : ControllerBase
     }
 
     [HttpPatch(Endpoints.User.UpdateUser)]
-    public ActionResult UpdateUser(int id)
+    public async Task<ActionResult<string>> UpdateUser([FromBody] JsonPatchDocument<UserDetailsDto> patch, int id)
     {
-        return Ok("Updated");
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        if (_db.Users is null)
+            return NotFound();
+
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        if (user is null)
+            return NotFound();
+
+        var userDto = _mapper.Map<UserDetailsDto>(user);
+        if (userDto is null)
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                "An error occurred while mapping the user object to the DTO.");
+
+        patch.ApplyTo(userDto);
+
+        _mapper.Map(userDto, user);
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status409Conflict);
+        }
+
+        return NoContent();
     }
 }
