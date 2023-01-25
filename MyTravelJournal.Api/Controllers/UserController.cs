@@ -105,9 +105,7 @@ public class UserController : ControllerBase
     public async Task<ActionResult<string>> UpdateUser([FromBody] JsonPatchDocument<UserDetailsDto> patch, int id)
     {
         if (!ModelState.IsValid)
-        {
             return BadRequest(ModelState);
-        }
 
         if (_db.Users is null)
             return NotFound();
@@ -124,6 +122,7 @@ public class UserController : ControllerBase
         patch.ApplyTo(userDto);
 
         _mapper.Map(userDto, user);
+
         try
         {
             await _db.SaveChangesAsync();
