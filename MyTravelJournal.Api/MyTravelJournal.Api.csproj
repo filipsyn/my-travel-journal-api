@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
       <UserSecretsId>4458b4ca-9b0f-4a1b-9bd0-0ef629b18b9d</UserSecretsId>
   </PropertyGroup>
 
