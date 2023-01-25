@@ -14,7 +14,8 @@ var connectionStringBuilder =
     };
 var connectionString = connectionStringBuilder.ConnectionString;
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
     {
@@ -30,6 +31,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<MyTravelJournalDbContext>(options =>
     options.UseNpgsql(connectionString)
 );
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 
 var app = builder.Build();
