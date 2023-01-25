@@ -101,6 +101,27 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Performs partial update of user's information using JsonPatch
+    /// </summary>
+    /// <param name="patch">Request body</param>
+    /// <param name="id">ID of users of whose data is changed</param>
+    /// <returns></returns>
+    /// <remarks>
+    ///     Structure of JSON patch request is as follows.
+    /// 
+    ///     Following example shows request to change user's username:
+    ///     
+    ///     ```
+    ///     [
+    ///         {
+    ///             "path" : "/username",
+    ///             "op" : "replace",
+    ///             "value" : "new.username"
+    ///         }
+    ///     ]
+    ///     ```
+    /// </remarks>
     [HttpPatch(Endpoints.User.UpdateUser)]
     public async Task<ActionResult<string>> UpdateUser([FromBody] JsonPatchDocument<UserDetailsDto> patch, int id)
     {
