@@ -35,7 +35,7 @@ public class UserController : ControllerBase
     public async Task<ActionResult<UserDetailsDto>> GetUserById(int id)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
-        
+
         if (user is null) return NotFound();
 
         return Ok(_mapper.Map<UserDetailsDto>(user));
