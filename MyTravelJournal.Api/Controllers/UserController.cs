@@ -23,12 +23,18 @@ public class UserController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Retrieves list of all users.
+    /// </summary>
+    /// <returns></returns>
+    /// <response code="200">All users retrieved</response>
     [HttpGet(Endpoints.User.GetAllUsers)]
-    public async Task<ActionResult<List<UserDetailsDto>>> GetAllUsers()
+    [ProducesResponseType(typeof(List<UserDetailsResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<UserDetailsResponse>>> GetAllUsers()
     {
         var users = await _db.Users.ToListAsync();
 
-        return Ok(_mapper.Map<List<UserDetailsDto>>(users));
+        return Ok(_mapper.Map<List<UserDetailsResponse>>(users));
     }
 
     [HttpGet(Endpoints.User.GetUserById)]
