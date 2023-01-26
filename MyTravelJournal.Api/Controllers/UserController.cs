@@ -26,9 +26,7 @@ public class UserController : ControllerBase
     [HttpGet(Endpoints.User.GetAllUsers)]
     public async Task<ActionResult<List<UserDetailsDto>>> GetAllUsers()
     {
-        var users = _db.Users;
-
-        var list = await users.Select(u => new UserDetailsDto
+        var list = await _db.Users.Select(u => new UserDetailsDto
             {
                 UserId = u.UserId,
                 Username = u.Username,
@@ -44,9 +42,7 @@ public class UserController : ControllerBase
     [HttpGet(Endpoints.User.GetUserById)]
     public async Task<ActionResult<UserDetailsDto>> GetUserById(int id)
     {
-        var users = _db.Users;
-
-        var result = await users.Select(u => new UserDetailsDto
+        var result = await _db.Users.Select(u => new UserDetailsDto
             {
                 UserId = u.UserId,
                 Username = u.Username,
@@ -65,9 +61,7 @@ public class UserController : ControllerBase
     [HttpPost(Endpoints.User.CreateUser)]
     public async Task<ActionResult> CreateUser([FromBody] UserDetailsDto request)
     {
-        var users = _db.Users;
-
-        users.Add(new User
+        _db.Users.Add(new User
         {
             Email = request.Email,
             FirstName = request.FirstName,
@@ -82,13 +76,12 @@ public class UserController : ControllerBase
     [HttpDelete(Endpoints.User.DeleteUser)]
     public async Task<ActionResult<User>> DeleteUser(int id)
     {
-        var users = _db.Users;
 
-        var result = await users.FirstOrDefaultAsync(u => u.UserId == id);
+        var result = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
         if (result is null)
             return NotFound();
 
-        users.Remove(result);
+        _db.Users.Remove(result);
         await _db.SaveChangesAsync();
 
         return Ok(result);
