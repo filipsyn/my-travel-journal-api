@@ -26,17 +26,10 @@ public class UserController : ControllerBase
     [HttpGet(Endpoints.User.GetAllUsers)]
     public async Task<ActionResult<List<UserDetailsDto>>> GetAllUsers()
     {
-        var list = await _db.Users.Select(u => new UserDetailsDto
-            {
-                UserId = u.UserId,
-                Username = u.Username,
-                Email = u.Email,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-            })
-            .ToListAsync();
+        var usersList = await _db.Users.ToListAsync();
+        var responses = _mapper.Map<List<UserDetailsDto>>(usersList);
 
-        return Ok(list);
+        return Ok(responses);
     }
 
     [HttpGet(Endpoints.User.GetUserById)]
@@ -76,7 +69,6 @@ public class UserController : ControllerBase
     [HttpDelete(Endpoints.User.DeleteUser)]
     public async Task<ActionResult<User>> DeleteUser(int id)
     {
-
         var result = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
         if (result is null)
             return NotFound();
