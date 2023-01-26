@@ -84,7 +84,10 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete(Endpoints.User.DeleteUser)]
-    public async Task<ActionResult<User>> DeleteUser(int id)
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<ActionResult<int>> DeleteUser(int id)
     {
         var result = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
         if (result is null)
