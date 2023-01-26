@@ -26,8 +26,8 @@ public class UserController : ControllerBase
     [HttpGet(Endpoints.User.GetAllUsers)]
     public async Task<ActionResult<List<UserDetailsDto>>> GetAllUsers()
     {
-        var usersList = await _db.Users.ToListAsync();
-        var responses = _mapper.Map<List<UserDetailsDto>>(usersList);
+        var users = await _db.Users.ToListAsync();
+        var responses = _mapper.Map<List<UserDetailsDto>>(users);
 
         return Ok(responses);
     }
