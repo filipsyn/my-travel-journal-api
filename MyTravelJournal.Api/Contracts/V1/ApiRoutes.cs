@@ -1,6 +1,6 @@
 namespace MyTravelJournal.Api.Utils;
 
-public static class Endpoints
+public static class ApiRoutes
 {
     private const string Root = "api";
 

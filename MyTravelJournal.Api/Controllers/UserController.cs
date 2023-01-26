@@ -10,7 +10,7 @@ using MyTravelJournal.Api.Utils;
 namespace MyTravelJournal.Api.Controllers;
 
 [ApiController]
-[Route(Endpoints.User.ControllerUrl)]
+[Route(ApiRoutes.User.ControllerUrl)]
 [Produces("application/json")]
 public class UserController : ControllerBase
 {
@@ -28,7 +28,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns></returns>
     /// <response code="200">All users retrieved</response>
-    [HttpGet(Endpoints.User.GetAllUsers)]
+    [HttpGet(ApiRoutes.User.GetAllUsers)]
     [ProducesResponseType(typeof(List<UserDetailsResponse>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<UserDetailsResponse>>> GetAllUsers()
     {
@@ -44,7 +44,7 @@ public class UserController : ControllerBase
     /// <returns></returns>
     /// <response code="200">Returns information about specific user</response>
     /// <response code="404">User with this ID was not found</response>
-    [HttpGet(Endpoints.User.GetUserById)]
+    [HttpGet(ApiRoutes.User.GetUserById)]
     [ProducesResponseType(typeof(UserDetailsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<UserDetailsResponse>> GetUserById(int id)
@@ -63,7 +63,7 @@ public class UserController : ControllerBase
     /// <returns></returns>
     /// <response code="200">New user was successfully added</response>
     /// <response code="409">Raised error when sending data to database</response>
-    [HttpPost(Endpoints.User.CreateUser)]
+    [HttpPost(ApiRoutes.User.CreateUser)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult> CreateUser([FromBody] CreateUserRequest request)
@@ -91,7 +91,7 @@ public class UserController : ControllerBase
     /// <response code="200">Successfully deleted user</response>
     /// <response code="404">User with this ID wasn't found</response>
     /// <response code="409">Raised error when sending data to database</response>
-    [HttpDelete(Endpoints.User.DeleteUser)]
+    [HttpDelete(ApiRoutes.User.DeleteUser)]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -140,7 +140,7 @@ public class UserController : ControllerBase
     /// <response code="409">Raised error when sending data to database</response>
     /// <response code="500">Mistake when mapping User to DTO</response>
     /// 
-    [HttpPatch(Endpoints.User.UpdateUser)]
+    [HttpPatch(ApiRoutes.User.UpdateUser)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
