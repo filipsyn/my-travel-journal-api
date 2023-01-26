@@ -81,11 +81,11 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>Performs partial update of user's data using JSON patch</summary>
+    /// <summary>Performs partial update of specific user's data.</summary>
     /// <param name="patch">Request body</param>
-    /// <param name="id">ID of user whose data are being changed</param>
+    /// <param name="id">ID of updated user</param>
     /// <remarks>
-    ///     Structure of JSON patch request is as follows.
+    ///     Request has a structure of standard JSON patch request.
     /// 
     ///     Following example shows request to change user's username:
     ///     
@@ -99,8 +99,18 @@ public class UserController : ControllerBase
     ///     ]
     ///     ```
     /// </remarks>
-    /// <response code="204">Marks successful patching. Returns nothing.</response>
+    /// <response code="204">Successfully updated</response>
+    /// <response code="400">Invalid model state</response>
+    /// <response code="404">Updating not existing user</response>
+    /// <response code="409">Raised error when sending data to database</response>
+    /// <response code="500">Mistake when mapping User to DTO</response>
+    /// 
     [HttpPatch(Endpoints.User.UpdateUser)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<string>> UpdateUser([FromBody] JsonPatchDocument<UserDetailsDto> patch, int id)
     {
         if (!ModelState.IsValid)
