@@ -7,7 +7,7 @@ using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.DTOs;
 using MyTravelJournal.Api.Models;
 
-namespace MyTravelJournal.Api.Controllers;
+namespace MyTravelJournal.Api.Controllers.V1;
 
 [ApiController]
 [Route(ApiRoutes.User.ControllerUrl)]
