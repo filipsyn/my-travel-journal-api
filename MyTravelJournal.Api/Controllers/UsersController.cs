@@ -12,12 +12,12 @@ namespace MyTravelJournal.Api.Controllers;
 [ApiController]
 [Route(ApiRoutes.User.ControllerUrl)]
 [Produces("application/json")]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
     private readonly DataContext _db;
     private readonly IMapper _mapper;
 
-    public UserController(DataContext db, IMapper mapper)
+    public UsersController(DataContext db, IMapper mapper)
     {
         _db = db;
         _mapper = mapper;
