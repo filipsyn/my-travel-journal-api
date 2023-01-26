@@ -9,5 +9,6 @@ public class RequestToModelProfile : Profile
     public RequestToModelProfile()
     {
         CreateMap<UserDetailsDto, User>();
+        CreateMap<CreateUserRequest, User>();
     }
 }
