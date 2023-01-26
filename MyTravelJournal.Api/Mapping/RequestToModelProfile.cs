@@ -10,7 +10,6 @@ public class RequestToModelProfile : Profile
 {
     public RequestToModelProfile()
     {
-        CreateMap<UserDetailsDto, User>();
         CreateMap<CreateUserRequest, User>();
         CreateMap<UpdateUserDetailsRequest, User>();
         CreateMap<JsonPatchDocument<UpdateUserDetailsRequest>, JsonPatchDocument<User>>();

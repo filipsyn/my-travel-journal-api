@@ -9,7 +9,6 @@ public class ModelToResponseProfile: Profile
     public ModelToResponseProfile()
     {
         
-        CreateMap<User, UserDetailsDto>();
         CreateMap<User, UserDetailsResponse>();
     } 
 }
