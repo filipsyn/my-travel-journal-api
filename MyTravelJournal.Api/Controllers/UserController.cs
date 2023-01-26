@@ -37,14 +37,23 @@ public class UserController : ControllerBase
         return Ok(_mapper.Map<List<UserDetailsResponse>>(users));
     }
 
+    /// <summary>
+    /// Retrieves specific user
+    /// </summary>
+    /// <param name="id">ID of searched user</param>
+    /// <returns></returns>
+    /// <response code="200">Returns information about specific user</response>
+    /// <response code="404">User with this ID was not found</response>
     [HttpGet(Endpoints.User.GetUserById)]
-    public async Task<ActionResult<UserDetailsDto>> GetUserById(int id)
+    [ProducesResponseType(typeof(UserDetailsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserDetailsResponse>> GetUserById(int id)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
 
         if (user is null) return NotFound();
 
-        return Ok(_mapper.Map<UserDetailsDto>(user));
+        return Ok(_mapper.Map<UserDetailsResponse>(user));
     }
 
     /// <summary>
