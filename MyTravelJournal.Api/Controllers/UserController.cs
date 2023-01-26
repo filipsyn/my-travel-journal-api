@@ -27,8 +27,6 @@ public class UserController : ControllerBase
     public async Task<ActionResult<List<UserDetailsDto>>> GetAllUsers()
     {
         var users = _db.Users;
-        if (users == null)
-            return NoContent();
 
         var list = await users.Select(u => new UserDetailsDto
             {
@@ -47,7 +45,6 @@ public class UserController : ControllerBase
     public async Task<ActionResult<UserDetailsDto>> GetUserById(int id)
     {
         var users = _db.Users;
-        if (users is null) return NoContent();
 
         var result = await users.Select(u => new UserDetailsDto
             {
@@ -69,8 +66,6 @@ public class UserController : ControllerBase
     public async Task<ActionResult> CreateUser([FromBody] UserDetailsDto request)
     {
         var users = _db.Users;
-        if (users is null)
-            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 
         users.Add(new User
         {
@@ -88,8 +83,6 @@ public class UserController : ControllerBase
     public async Task<ActionResult<User>> DeleteUser(int id)
     {
         var users = _db.Users;
-        if (users is null)
-            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 
         var result = await users.FirstOrDefaultAsync(u => u.UserId == id);
         if (result is null)
@@ -128,9 +121,6 @@ public class UserController : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-
-        if (_db.Users is null)
-            return NotFound();
 
         var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
         if (user is null)
