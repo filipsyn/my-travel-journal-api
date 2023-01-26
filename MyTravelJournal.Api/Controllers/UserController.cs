@@ -91,9 +91,18 @@ public class UserController : ControllerBase
             return NotFound();
 
         _db.Users.Remove(result);
-        await _db.SaveChangesAsync();
 
-        return Ok(result);
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status409Conflict);
+        }
+
+        return Ok(id);
     }
 
     /// <summary>Performs partial update of specific user's data.</summary>
