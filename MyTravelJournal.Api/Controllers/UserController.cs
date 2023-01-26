@@ -35,20 +35,11 @@ public class UserController : ControllerBase
     [HttpGet(Endpoints.User.GetUserById)]
     public async Task<ActionResult<UserDetailsDto>> GetUserById(int id)
     {
-        var result = await _db.Users.Select(u => new UserDetailsDto
-            {
-                UserId = u.UserId,
-                Username = u.Username,
-                Email = u.Email,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-            })
-            .FirstOrDefaultAsync(u => u.UserId == id);
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        
+        if (user is null) return NotFound();
 
-        if (result is null)
-            return NotFound();
-
-        return Ok(result);
+        return Ok(_mapper.Map<UserDetailsDto>(user));
     }
 
     [HttpPost(Endpoints.User.CreateUser)]
