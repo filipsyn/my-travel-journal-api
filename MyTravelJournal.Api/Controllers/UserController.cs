@@ -146,7 +146,8 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<string>> UpdateUser([FromBody] JsonPatchDocument<UserDetailsDto> patch, int id)
+    public async Task<ActionResult<string>> UpdateUser([FromBody] JsonPatchDocument<UpdateUserDetailsRequest> patch,
+        int id)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -155,14 +156,11 @@ public class UserController : ControllerBase
         if (user is null)
             return NotFound();
 
-        var userDto = _mapper.Map<UserDetailsDto>(user);
-        if (userDto is null)
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                "An error occurred while mapping the user object to the DTO.");
+        var patchedUser = _mapper.Map<JsonPatchDocument<User>>(patch);
+        if (patchedUser is null)
+            return StatusCode(StatusCodes.Status500InternalServerError);
 
-        patch.ApplyTo(userDto);
-
-        _mapper.Map(userDto, user);
+        patchedUser.ApplyTo(user);
 
         try
         {
