@@ -122,6 +122,7 @@ public class UserController : ControllerBase
     ///     ]
     ///     ```
     /// </remarks>
+    /// <response code="204">Marks successful patching. Returns nothing.</response>
     [HttpPatch(Endpoints.User.UpdateUser)]
     public async Task<ActionResult<string>> UpdateUser([FromBody] JsonPatchDocument<UserDetailsDto> patch, int id)
     {
