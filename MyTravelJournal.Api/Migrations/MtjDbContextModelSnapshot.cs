@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyTravelJournal.Api.Migrations
 {
-    [DbContext(typeof(MyTravelJournalDbContext))]
+    [DbContext(typeof(DataContext))]
     partial class MtjDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

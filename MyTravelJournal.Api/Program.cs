@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen(options =>
     }
 );
 
-builder.Services.AddDbContext<MyTravelJournalDbContext>(options =>
+builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(connectionString)
 );
 builder.Services.AddAutoMapper(typeof(Program).Assembly);

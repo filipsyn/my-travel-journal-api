@@ -14,10 +14,10 @@ namespace MyTravelJournal.Api.Controllers;
 [Produces("application/json")]
 public class UserController : ControllerBase
 {
-    private readonly MyTravelJournalDbContext _db;
+    private readonly DataContext _db;
     private readonly IMapper _mapper;
 
-    public UserController(MyTravelJournalDbContext db, IMapper mapper)
+    public UserController(DataContext db, IMapper mapper)
     {
         _db = db;
         _mapper = mapper;
