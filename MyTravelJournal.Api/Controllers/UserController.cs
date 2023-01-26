@@ -44,14 +44,17 @@ public class UserController : ControllerBase
     [HttpPost(Endpoints.User.CreateUser)]
     public async Task<ActionResult> CreateUser([FromBody] UserDetailsDto request)
     {
-        _db.Users.Add(new User
+        var user = _mapper.Map<User>(request);
+        _db.Users.Add(user);
+
+        try
         {
-            Email = request.Email,
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Username = request.Username
-        });
-        await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return StatusCode(StatusCodes.Status409Conflict);
+        }
 
         return Ok();
     }
