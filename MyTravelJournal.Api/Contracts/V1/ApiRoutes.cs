@@ -1,4 +1,4 @@
-namespace MyTravelJournal.Api.Utils;
+namespace MyTravelJournal.Api.Contracts.V1;
 
 public static class ApiRoutes
 {

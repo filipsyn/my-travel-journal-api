@@ -2,10 +2,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyTravelJournal.Api.Contracts.V1;
 using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.DTOs;
 using MyTravelJournal.Api.Models;
-using MyTravelJournal.Api.Utils;
 
 namespace MyTravelJournal.Api.Controllers;
 
