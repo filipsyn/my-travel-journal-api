@@ -83,6 +83,14 @@ public class UserController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Deletes specific user
+    /// </summary>
+    /// <param name="id">ID of user to be deleted</param>
+    /// <returns></returns>
+    /// <response code="200">Successfully deleted user</response>
+    /// <response code="404">User with this ID wasn't found</response>
+    /// <response code="409">Raised error when sending data to database</response>
     [HttpDelete(Endpoints.User.DeleteUser)]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
