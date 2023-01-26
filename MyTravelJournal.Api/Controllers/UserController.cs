@@ -94,12 +94,9 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>
-    /// Performs partial update of user's information using JsonPatch
-    /// </summary>
+    /// <summary>Performs partial update of user's data using JSON patch</summary>
     /// <param name="patch">Request body</param>
-    /// <param name="id">ID of users of whose data is changed</param>
-    /// <returns></returns>
+    /// <param name="id">ID of user whose data are being changed</param>
     /// <remarks>
     ///     Structure of JSON patch request is as follows.
     /// 
