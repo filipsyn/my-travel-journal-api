@@ -2,9 +2,15 @@ namespace MyTravelJournal.Api.Utils;
 
 public static class Endpoints
 {
+    private const string Root = "api";
+
+    private const string Version = "v1";
+
+    private const string Base = $"{Root}/{Version}/";
+
     public static class User
     {
-        public const string ControllerUrl = "/api/user";
+        public const string ControllerUrl = Base + "users";
 
         public const string GetAllUsers = "";
 
