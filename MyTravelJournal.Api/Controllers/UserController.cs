@@ -41,8 +41,17 @@ public class UserController : ControllerBase
         return Ok(_mapper.Map<UserDetailsDto>(user));
     }
 
+    /// <summary>
+    /// Creates new user
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    /// <response code="200">New user was successfully added</response>
+    /// <response code="409">Raised error when sending data to database</response>
     [HttpPost(Endpoints.User.CreateUser)]
-    public async Task<ActionResult> CreateUser([FromBody] UserDetailsDto request)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
         var user = _mapper.Map<User>(request);
         _db.Users.Add(user);
