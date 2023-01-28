@@ -177,6 +177,46 @@ public class UserService : IUserService
         };
     }
 
+
+    /// <summary>
+    /// Asynchronously performs partial update of specific user's information. 
+    /// </summary>
+    /// <param name="patchRequest">A request containing info about update</param>
+    /// <param name="id">An unique ID of users which is updated</param>
+    /// <returns>
+    /// <para>
+    /// A standardized response body <see cref="ServiceResponse{T}"/> carrying data with type of <see cref="UserDetailsResponse"/>.
+    /// </para>
+    /// </returns>
+    /// 
+    /// <remarks>
+    /// This method returns multiple variants of <see cref="ServiceResponse{T}"/> with different contents.
+    /// <list type="table">
+    ///     <listheader>
+    ///         <term>Status</term>
+    ///         <description>Response payload</description>
+    ///     </listheader>
+    ///     <item>
+    ///         <term><c>200</c></term>
+    ///         <description>Returns <c>OK</c> status and <c>Success</c> set to <c>true</c></description>
+    ///     </item>
+    /// 
+    ///     <item>
+    ///         <term><c>404</c></term>
+    ///         <description>Returns <c>NOT FOUND</c> status and <c>Success</c> set to <c>false</c></description>
+    ///     </item>
+    /// 
+    ///     <item>
+    ///         <term><c>409</c></term>
+    ///         <description>Returns <c>CONFLICT</c> status and <c>Success</c> set to <c>false</c></description>
+    ///     </item>
+    /// 
+    ///     <item>
+    ///         <term><c>500</c></term>
+    ///         <description>Returns <c>INTERNAL SERVER ERROR</c> status and <c>Success</c> set to <c>false</c></description>
+    ///     </item>
+    /// </list>
+    /// </remarks>
     public async Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(
         JsonPatchDocument<UpdateUserDetailsRequest> patchRequest, int id)
     {
@@ -221,7 +261,7 @@ public class UserService : IUserService
                 Success = false,
                 Details = new StatusDetails
                 {
-                    Code = StatusCodes.Status500InternalServerError,
+                    Code = StatusCodes.Status409Conflict,
                     Message = ex.ToString()
                 }
             };
