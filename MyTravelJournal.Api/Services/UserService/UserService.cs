@@ -19,6 +19,29 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Asynchronously retrieves list of all users.
+    /// </summary>
+    /// <returns>
+    /// <para>
+    /// A standardized response body <see cref="ServiceResponse{T}"/> carrying data with type of
+    /// <see cref="IEnumerable{T}"/> containing <see cref="UserDetailsResponse"/>.
+    /// </para>
+    /// </returns>
+    /// 
+    /// <remarks>
+    /// This method returns multiple variants of <see cref="ServiceResponse{T}"/> with different contents.
+    /// <list type="table">
+    ///     <listheader>
+    ///         <term>Status</term>
+    ///         <description>Description</description>
+    ///     </listheader>
+    ///     <item>
+    ///         <term><c>200</c></term>
+    ///         <description>Returns <c>data</c> payload, <c>200</c> status code and <c>Success</c> set to <c>true</c></description>
+    ///     </item>
+    /// </list>
+    /// </remarks>
     public async Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync()
     {
         var users = await _db.Users.ToListAsync();
