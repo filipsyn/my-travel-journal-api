@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MyTravelJournal.Api.Contracts.V1;
+using MyTravelJournal.Api.Data;
 
 namespace MyTravelJournal.Api.Controllers.V1;
 
@@ -7,6 +8,13 @@ namespace MyTravelJournal.Api.Controllers.V1;
 [Route(ApiRoutes.Auth.ControllerUrl)]
 public class AuthController : ControllerBase
 {
+    private readonly DataContext _db;
+
+    public AuthController(DataContext db)
+    {
+        _db = db;
+    }
+
     [HttpPost(ApiRoutes.Auth.Register)]
     public async Task<ActionResult> Register()
     {
