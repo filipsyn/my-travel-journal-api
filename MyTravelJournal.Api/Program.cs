@@ -2,7 +2,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MyTravelJournal.Api.Data;
-using MyTravelJournal.Api.Services.Auth;
+using MyTravelJournal.Api.Services.AuthService;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
