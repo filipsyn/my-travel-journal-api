@@ -64,8 +64,7 @@ public class UserService : IUserService
     /// <param name="id">A unique ID of searched user, which is to be retrieved</param>
     /// <returns>
     /// <para>
-    /// A standardized response body <see cref="ServiceResponse{T}"/> carrying data with type of
-    /// <see cref="IEnumerable{T}"/> containing <see cref="UserDetailsResponse"/>.
+    /// A standardized response body <see cref="ServiceResponse{T}"/> carrying data with type of <see cref="UserDetailsResponse"/>.
     /// </para>
     /// </returns>
     /// 
@@ -116,6 +115,35 @@ public class UserService : IUserService
         };
     }
 
+
+    /// <summary>
+    /// Asynchronously creates new user, using information passed in a parameter. 
+    /// </summary>
+    /// <param name="request">A request body with information about new user</param>
+    /// <returns>
+    /// <para>
+    /// A standardized response body <see cref="ServiceResponse{T}"/> carrying data with type of <see cref="UserDetailsResponse"/>.
+    /// </para>
+    /// </returns>
+    /// 
+    /// <remarks>
+    /// This method returns multiple variants of <see cref="ServiceResponse{T}"/> with different contents.
+    /// <list type="table">
+    ///     <listheader>
+    ///         <term>Status</term>
+    ///         <description>Response payload</description>
+    ///     </listheader>
+    ///     <item>
+    ///         <term><c>200</c></term>
+    ///         <description>Returns <c>OK</c> status and <c>Success</c> set to <c>true</c></description>
+    ///     </item>
+    /// 
+    ///     <item>
+    ///         <term><c>409</c></term>
+    ///         <description>Returns <c>CONFLICT</c> status and <c>Success</c> set to <c>false</c></description>
+    ///     </item>
+    /// </list>
+    /// </remarks>
     public async Task<ServiceResponse<UserDetailsResponse>> CreateAsync(CreateUserRequest request)
     {
         var user = _mapper.Map<User>(request);
