@@ -36,9 +36,9 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(List<UserDetailsResponse>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<UserDetailsResponse>>> GetAllUsers()
     {
-        var users = await _db.Users.ToListAsync();
+        var response = await _userService.GetAllAsync();
 
-        return Ok(_mapper.Map<List<UserDetailsResponse>>(users));
+        return Ok(response.Data);
     }
 
     /// <summary>
