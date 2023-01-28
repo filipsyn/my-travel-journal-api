@@ -27,7 +27,7 @@ public class UserService : IUserService
             return new ServiceResponse<UserDetailsResponse>
             {
                 Success = false,
-                Error = new ErrorDetails
+                Details = new StatusDetails
                 {
                     Code = StatusCodes.Status404NotFound,
                     Message = "User with this ID was not found."
