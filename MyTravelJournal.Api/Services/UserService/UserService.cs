@@ -1,6 +1,6 @@
-using System.Collections;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Models;
