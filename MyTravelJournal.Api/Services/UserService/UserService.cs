@@ -83,7 +83,8 @@ public class UserService : IUserService
             Success = true,
             Details = new StatusDetails
             {
-                Code = StatusCodes.Status204NoContent
+                Code = StatusCodes.Status204NoContent,
+                Message = "User was successfully created."
             }
         };
     }
