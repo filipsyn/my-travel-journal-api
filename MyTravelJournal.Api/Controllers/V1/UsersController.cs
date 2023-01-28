@@ -72,19 +72,13 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
-        var user = _mapper.Map<User>(request);
-        _db.Users.Add(user);
+        // TODO: Document response code 204
+        // TODO: Change response to Created and fetch new resource URI
+        var response = await _userService.CreateAsync(request);
 
-        try
-        {
-            await _db.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            return StatusCode(StatusCodes.Status409Conflict);
-        }
-
-        return Ok();
+        return !response.Success
+            ? StatusCode(response.Details.Code, response.Details)
+            : NoContent();
     }
 
     /// <summary>
