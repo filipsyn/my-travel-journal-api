@@ -1,4 +1,4 @@
-namespace MyTravelJournal.Api.DTOs;
+namespace MyTravelJournal.Api.Contracts.V1.Requests;
 
 public record CreateUserRequest
 {

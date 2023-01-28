@@ -1,5 +1,5 @@
 using AutoMapper;
-using MyTravelJournal.Api.DTOs;
+using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Models;
 
 namespace MyTravelJournal.Api.Mapping;
