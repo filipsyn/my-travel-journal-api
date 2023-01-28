@@ -19,6 +19,21 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
+    public async Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync()
+    {
+        var users = await _db.Users.ToListAsync();
+        return new ServiceResponse<IEnumerable<UserDetailsResponse>>
+        {
+            Success = true,
+            Data = _mapper.Map<IEnumerable<UserDetailsResponse>>(users),
+            Details = new StatusDetails
+            {
+                Code = StatusCodes.Status200OK,
+                Message = "List of users successfully retrieved."
+            }
+        };
+    }
+
     public async Task<ServiceResponse<UserDetailsResponse>> GetByIdAsync(int id)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
@@ -47,22 +62,6 @@ public class UserService : IUserService
             }
         };
     }
-
-    public async Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync()
-    {
-        var users = await _db.Users.ToListAsync();
-        return new ServiceResponse<IEnumerable<UserDetailsResponse>>
-        {
-            Success = true,
-            Data = _mapper.Map<IEnumerable<UserDetailsResponse>>(users),
-            Details = new StatusDetails
-            {
-                Code = StatusCodes.Status200OK,
-                Message = "List of users successfully retrieved."
-            }
-        };
-    }
-
 
     public async Task<ServiceResponse<UserDetailsResponse>> CreateAsync(CreateUserRequest request)
     {
