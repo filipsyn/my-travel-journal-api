@@ -2,6 +2,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MyTravelJournal.Api.Data;
+using MyTravelJournal.Api.Services.Auth;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +27,7 @@ builder.Services.AddSwaggerGen(options =>
             Title = "My Travel Journal",
             Description = "REST API for managing information about trips, users and locations",
         });
-        
+
         var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     }
@@ -36,6 +37,8 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(connectionString)
 );
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+builder.Services.AddSingleton<IAuthService, AuthService>();
 
 
 var app = builder.Build();
