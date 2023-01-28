@@ -182,7 +182,7 @@ public class UserService : IUserService
     /// Asynchronously performs partial update of specific user's information. 
     /// </summary>
     /// <param name="patchRequest">A request containing info about update</param>
-    /// <param name="id">An unique ID of users which is updated</param>
+    /// <param name="id">An unique ID of user which is updated</param>
     /// <returns>
     /// <para>
     /// A standardized response body <see cref="ServiceResponse{T}"/> carrying data with type of <see cref="UserDetailsResponse"/>.
