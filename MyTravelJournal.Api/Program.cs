@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Services.AuthService;
+using MyTravelJournal.Api.Services.UserService;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,7 +39,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 );
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-builder.Services.AddSingleton<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 var app = builder.Build();
