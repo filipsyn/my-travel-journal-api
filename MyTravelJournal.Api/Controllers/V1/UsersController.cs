@@ -150,25 +150,8 @@ public class UsersController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
-        if (user is null)
-            return NotFound();
+        var response = await _userService.UpdateAsync(patch, id);
 
-        var patchedUser = _mapper.Map<JsonPatchDocument<User>>(patch);
-        if (patchedUser is null)
-            return StatusCode(StatusCodes.Status500InternalServerError);
-
-        patchedUser.ApplyTo(user);
-
-        try
-        {
-            await _db.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            return StatusCode(StatusCodes.Status409Conflict);
-        }
-
-        return NoContent();
+        return StatusCode(response.Details.Code, response);
     }
 }
