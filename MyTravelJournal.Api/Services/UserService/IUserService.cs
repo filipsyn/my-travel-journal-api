@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.JsonPatch;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 
@@ -12,4 +13,4 @@ public interface IUserService
     public Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(
         JsonPatchDocument<UpdateUserDetailsRequest> patchRequest, int id);
     //public Task<ServiceResponse<UserDetailsResponse>> DeleteByIdAsync(int id);
-} 
+}
