@@ -95,23 +95,9 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult<int>> DeleteUser(int id)
     {
-        var result = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
-        if (result is null)
-            return NotFound();
+        var response = await _userService.DeleteByIdAsync(id);
 
-        _db.Users.Remove(result);
-
-        try
-        {
-            await _db.SaveChangesAsync();
-        }
-
-        catch (DbUpdateConcurrencyException)
-        {
-            return StatusCode(StatusCodes.Status409Conflict);
-        }
-
-        return Ok(id);
+        return StatusCode(response.Details.Code, response);
     }
 
     /// <summary>Performs partial update of specific user's data.</summary>
