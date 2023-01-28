@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
@@ -87,8 +88,8 @@ public class UserService : IUserService
         };
     }
 
-    /*
-    public Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(int id)
+    public async Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(
+        JsonPatchDocument<UpdateUserDetailsRequest> patchRequest, int id)
     {
     }
 

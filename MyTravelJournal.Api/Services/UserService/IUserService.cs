@@ -8,6 +8,8 @@ public interface IUserService
     public Task<ServiceResponse<UserDetailsResponse>> GetByIdAsync(int id);
     public Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync();
     public Task<ServiceResponse<UserDetailsResponse>> CreateAsync(CreateUserRequest request);
-    //public Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(int id);
+
+    public Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(
+        JsonPatchDocument<UpdateUserDetailsRequest> patchRequest, int id);
     //public Task<ServiceResponse<UserDetailsResponse>> DeleteByIdAsync(int id);
 } 
