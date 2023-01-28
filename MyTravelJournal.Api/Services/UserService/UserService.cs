@@ -39,7 +39,12 @@ public class UserService : IUserService
         return new ServiceResponse<UserDetailsResponse>
         {
             Success = true,
-            Data = _mapper.Map<UserDetailsResponse>(user)
+            Data = _mapper.Map<UserDetailsResponse>(user),
+            Details = new StatusDetails
+            {
+                Code = StatusCodes.Status200OK,
+                Message = "User successfully retrieved"
+            }
         };
     }
 
@@ -49,7 +54,12 @@ public class UserService : IUserService
         return new ServiceResponse<IEnumerable<UserDetailsResponse>>
         {
             Success = true,
-            Data = _mapper.Map<IEnumerable<UserDetailsResponse>>(users)
+            Data = _mapper.Map<IEnumerable<UserDetailsResponse>>(users),
+            Details = new StatusDetails
+            {
+                Code = StatusCodes.Status200OK,
+                Message = "List of users successfully retrieved."
+            }
         };
     }
 
@@ -67,7 +77,6 @@ public class UserService : IUserService
         {
             return new ServiceResponse<UserDetailsResponse>
             {
-                Data = null,
                 Success = false,
                 Details = new StatusDetails
                 {
@@ -79,11 +88,10 @@ public class UserService : IUserService
 
         return new ServiceResponse<UserDetailsResponse>
         {
-            Data = null,
             Success = true,
             Details = new StatusDetails
             {
-                Code = StatusCodes.Status204NoContent,
+                Code = StatusCodes.Status200OK,
                 Message = "User was successfully created."
             }
         };
@@ -146,7 +154,7 @@ public class UserService : IUserService
             Details = new StatusDetails
             {
                 Code = StatusCodes.Status200OK,
-                Message = "User successfully updated."
+                Message = "User was successfully updated."
             }
         };
     }
