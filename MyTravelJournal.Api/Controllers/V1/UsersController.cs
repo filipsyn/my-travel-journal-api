@@ -53,11 +53,11 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<UserDetailsResponse>> GetUserById(int id)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        var response = await _userService.GetByIdAsync(id);
 
-        if (user is null) return NotFound();
-
-        return Ok(_mapper.Map<UserDetailsResponse>(user));
+        return !response.Success
+            ? StatusCode(response.Error.Code, response.Error)
+            : Ok(response.Data);
     }
 
     /// <summary>
