@@ -52,11 +52,42 @@ public class UserService : IUserService
         };
     }
 
-    /*
-    public Task<ServiceResponse<UserDetailsResponse>> CreateAsync()
+
+    public async Task<ServiceResponse<UserDetailsResponse>> CreateAsync(CreateUserRequest request)
     {
+        var user = _mapper.Map<User>(request);
+        _db.Users.Add(user);
+
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            return new ServiceResponse<UserDetailsResponse>
+            {
+                Data = null,
+                Success = false,
+                Details = new StatusDetails
+                {
+                    Code = StatusCodes.Status409Conflict,
+                    Message = ex.ToString(),
+                }
+            };
+        }
+
+        return new ServiceResponse<UserDetailsResponse>
+        {
+            Data = null,
+            Success = true,
+            Details = new StatusDetails
+            {
+                Code = StatusCodes.Status204NoContent
+            }
+        };
     }
 
+    /*
     public Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(int id)
     {
     }
