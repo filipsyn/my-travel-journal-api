@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace MyTravelJournal.Api.Contracts.V1.Responses;
 
 /// <summary>
@@ -6,7 +8,9 @@ namespace MyTravelJournal.Api.Contracts.V1.Responses;
 /// <typeparam name="T">Type of data returned by service</typeparam>
 public class ServiceResponse<T>
 {
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public T? Data { get; init; } = default(T);
-    public bool Success { get; init; }
+
+    [JsonIgnore] public bool Success { get; init; }
     public StatusDetails Details { get; init; } = new();
 }
