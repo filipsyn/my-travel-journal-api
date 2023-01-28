@@ -1,12 +1,8 @@
-using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Contracts.V1;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
-using MyTravelJournal.Api.Data;
-using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Services.UserService;
 
 namespace MyTravelJournal.Api.Controllers.V1;
@@ -16,14 +12,10 @@ namespace MyTravelJournal.Api.Controllers.V1;
 [Produces("application/json")]
 public class UsersController : ControllerBase
 {
-    private readonly DataContext _db;
-    private readonly IMapper _mapper;
     private readonly IUserService _userService;
 
-    public UsersController(DataContext db, IMapper mapper, IUserService userService)
+    public UsersController(IUserService userService)
     {
-        _db = db;
-        _mapper = mapper;
         _userService = userService;
     }
 
