@@ -7,6 +7,7 @@ using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Models;
+using MyTravelJournal.Api.Services.UserService;
 
 namespace MyTravelJournal.Api.Controllers.V1;
 
@@ -17,11 +18,13 @@ public class UsersController : ControllerBase
 {
     private readonly DataContext _db;
     private readonly IMapper _mapper;
+    private readonly IUserService _userService;
 
-    public UsersController(DataContext db, IMapper mapper)
+    public UsersController(DataContext db, IMapper mapper, IUserService userService)
     {
         _db = db;
         _mapper = mapper;
+        _userService = userService;
     }
 
     /// <summary>
