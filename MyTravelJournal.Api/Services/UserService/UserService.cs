@@ -34,11 +34,11 @@ public class UserService : IUserService
     /// <list type="table">
     ///     <listheader>
     ///         <term>Status</term>
-    ///         <description>Description</description>
+    ///         <description>Response payload</description>
     ///     </listheader>
     ///     <item>
     ///         <term><c>200</c></term>
-    ///         <description>Returns <c>data</c> payload, <c>200</c> status code and <c>Success</c> set to <c>true</c></description>
+    ///         <description>Returns <c>data</c> payload, <c>OK</c> status code and <c>Success</c> set to <c>true</c></description>
     ///     </item>
     /// </list>
     /// </remarks>
