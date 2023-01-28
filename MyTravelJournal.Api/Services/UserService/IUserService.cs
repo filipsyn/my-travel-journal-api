@@ -12,5 +12,6 @@ public interface IUserService
 
     public Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(
         JsonPatchDocument<UpdateUserDetailsRequest> patchRequest, int id);
-    //public Task<ServiceResponse<UserDetailsResponse>> DeleteByIdAsync(int id);
+
+    public Task<ServiceResponse<UserDetailsResponse>> DeleteByIdAsync(int id);
 }

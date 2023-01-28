@@ -152,9 +152,49 @@ public class UserService : IUserService
     }
 
 
-    /*
-    public Task<ServiceResponse<UserDetailsResponse>> DeleteByIdAsync(int id)
+    public async Task<ServiceResponse<UserDetailsResponse>> DeleteByIdAsync(int id)
     {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        if (user is null)
+        {
+            return new ServiceResponse<UserDetailsResponse>
+            {
+                Success = false,
+                Details = new StatusDetails
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Message = "User with this ID was not found."
+                }
+            };
+        }
+
+        _db.Users.Remove(user);
+
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            return new ServiceResponse<UserDetailsResponse>
+            {
+                Success = false,
+                Details = new StatusDetails
+                {
+                    Code = StatusCodes.Status409Conflict,
+                    Message = ex.ToString()
+                }
+            };
+        }
+
+        return new ServiceResponse<UserDetailsResponse>
+        {
+            Success = true,
+            Details = new StatusDetails
+            {
+                Code = StatusCodes.Status200OK,
+                Message = "User was successfully deleted."
+            }
+        };
     }
-    */
 }
