@@ -30,7 +30,7 @@ public class UsersController : ControllerBase
     {
         var response = await _userService.GetAllAsync();
 
-        return Ok(response.Data);
+        return StatusCode(response.Details.Code, response);
     }
 
     /// <summary>
@@ -47,9 +47,7 @@ public class UsersController : ControllerBase
     {
         var response = await _userService.GetByIdAsync(id);
 
-        return !response.Success
-            ? StatusCode(response.Details.Code, response.Details)
-            : Ok(response.Data);
+        return StatusCode(response.Details.Code, response);
     }
 
     /// <summary>
@@ -68,9 +66,7 @@ public class UsersController : ControllerBase
         // TODO: Change response to Created and fetch new resource URI
         var response = await _userService.CreateAsync(request);
 
-        return !response.Success
-            ? StatusCode(response.Details.Code, response.Details)
-            : NoContent();
+        return StatusCode(response.Details.Code, response);
     }
 
     /// <summary>
