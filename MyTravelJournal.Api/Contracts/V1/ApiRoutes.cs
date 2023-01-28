@@ -22,4 +22,13 @@ public static class ApiRoutes
 
         public const string UpdateUser = "{id:int}";
     }
+
+    public static class Auth
+    {
+        public const string ControllerUrl = Base + "auth";
+
+        public const string Register = "register";
+
+        public const string Login = "login";
+    }
 }
