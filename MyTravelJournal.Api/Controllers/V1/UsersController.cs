@@ -56,7 +56,7 @@ public class UsersController : ControllerBase
         var response = await _userService.GetByIdAsync(id);
 
         return !response.Success
-            ? StatusCode(response.Error.Code, response.Error)
+            ? StatusCode(response.Details.Code, response.Details)
             : Ok(response.Data);
     }
 

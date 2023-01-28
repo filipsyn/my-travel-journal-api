@@ -8,5 +8,5 @@ public class ServiceResponse<T>
 {
     public T? Data { get; init; } = default(T);
     public bool Success { get; init; }
-    public ErrorDetails Error { get; init; } = new();
+    public StatusDetails Details { get; init; } = new();
 }
