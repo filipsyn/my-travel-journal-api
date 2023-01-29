@@ -61,6 +61,8 @@ public interface IUserService
     /// </remarks>
     public Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync();
 
+    public Task<ServiceResponse<UserDetailsResponse>> GetByUsernameAsync(string username);
+
 
     /// <summary>
     /// Asynchronously creates new user, using information passed in a parameter. 

@@ -64,6 +64,33 @@ public class UserService : IUserService
         };
     }
 
+    public async Task<ServiceResponse<UserDetailsResponse>> GetByUsernameAsync(string username)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username);
+        if (user is null)
+        {
+            return new ServiceResponse<UserDetailsResponse>
+            {
+                Success = false,
+                Details = new StatusDetails
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Message = "User with this username doesn't exist."
+                }
+            };
+        }
+
+        return new ServiceResponse<UserDetailsResponse>
+        {
+            Success = true,
+            Data = _mapper.Map<UserDetailsResponse>(user),
+            Details = new StatusDetails
+            {
+                Code = StatusCodes.Status200OK,
+                Message = "User successfully found."
+            }
+        };
+    }
 
     public async Task<ServiceResponse<UserDetailsResponse>> CreateAsync(CreateUserRequest request)
     {
