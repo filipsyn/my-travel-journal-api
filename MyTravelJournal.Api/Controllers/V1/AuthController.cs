@@ -23,4 +23,11 @@ public class AuthController : ControllerBase
         var response = await _authService.RegisterAsync(request);
         return StatusCode(response.Details.Code, response);
     }
+
+    [HttpPost(ApiRoutes.Auth.Login)]
+    public async Task<ActionResult<ServiceResponse<string>>> Login([FromBody] LoginRequest request)
+    {
+        var response = await _authService.LoginAsync(request);
+        return StatusCode(response.Details.Code, response);
+    }
 }
