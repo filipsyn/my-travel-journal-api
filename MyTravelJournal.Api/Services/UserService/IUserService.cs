@@ -61,6 +61,35 @@ public interface IUserService
     /// </remarks>
     public Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync();
 
+    
+    /// <summary>
+    /// Asynchronously retrieves data about specific user.
+    /// </summary>
+    /// <param name="username">An username of searched user.</param>
+    /// <returns>
+    /// <para>
+    /// A standardized response body <see cref="ServiceResponse{T}"/> carrying data with type of <see cref="UserDetailsResponse"/>.
+    /// </para>
+    /// </returns>
+    /// 
+    /// <remarks>
+    /// This method returns multiple variants of <see cref="ServiceResponse{T}"/> with different contents.
+    /// <list type="table">
+    ///     <listheader>
+    ///         <term>Status</term>
+    ///         <description>Response payload</description>
+    ///     </listheader>
+    ///     <item>
+    ///         <term><c>200</c></term>
+    ///         <description>Returns <c>data</c> payload, <c>OK</c> status and <c>Success</c> set to <c>true</c></description>
+    ///     </item>
+    /// 
+    ///     <item>
+    ///         <term><c>404</c></term>
+    ///         <description>Returns <c>NOT FOUND</c> status and <c>Success</c> set to <c>false</c></description>
+    ///     </item>
+    /// </list>
+    /// </remarks>
     public Task<ServiceResponse<UserDetailsResponse>> GetByUsernameAsync(string username);
 
 
