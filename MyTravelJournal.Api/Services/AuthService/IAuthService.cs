@@ -9,6 +9,7 @@ public interface IAuthService
     public Task<ServiceResponse<string>> RegisterAsync(CreateUserRequest request);
 
     // Login Async
+    public Task<ServiceResponse<string>> LoginAsync(LoginRequest request);
 
     // Generate Token
 
