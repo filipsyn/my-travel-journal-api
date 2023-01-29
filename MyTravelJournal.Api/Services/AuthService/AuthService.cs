@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
+using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Services.UserService;
 
 namespace MyTravelJournal.Api.Services.AuthService;
@@ -7,10 +9,12 @@ namespace MyTravelJournal.Api.Services.AuthService;
 public class AuthService : IAuthService
 {
     private readonly IUserService _userService;
+    private readonly DataContext _db;
 
-    public AuthService(IUserService userService)
+    public AuthService(IUserService userService, DataContext db)
     {
         _userService = userService;
+        _db = db;
     }
 
     public async Task<ServiceResponse<string>> RegisterAsync(CreateUserRequest request)
@@ -49,6 +53,18 @@ public class AuthService : IAuthService
         }
 
         // Authenticate password
+        if (!await VerifyPasswordAsync(request.Username, request.Password))
+        {
+            return new ServiceResponse<string>
+            {
+                Success = false,
+                Details = new StatusDetails
+                {
+                    Code = StatusCodes.Status400BadRequest,
+                    Message = "Incorrect password"
+                }
+            };
+        }
 
         // Generate JWT token
 
@@ -63,5 +79,11 @@ public class AuthService : IAuthService
                 Message = "User successfully logged in."
             }
         };
+    }
+
+    private async Task<bool> VerifyPasswordAsync(string username, string password)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username);
+        return user is not null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
     }
 }
