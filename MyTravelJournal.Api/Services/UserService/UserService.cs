@@ -92,7 +92,7 @@ public class UserService : IUserService
         };
     }
 
-    public async Task<ServiceResponse<UserDetailsResponse>> CreateAsync(CreateUserRequest request)
+    public async Task<ServiceResponse<string>> CreateAsync(CreateUserRequest request)
     {
         var user = _mapper.Map<User>(request);
         _db.Users.Add(user);
@@ -103,7 +103,7 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException ex)
         {
-            return new ServiceResponse<UserDetailsResponse>
+            return new ServiceResponse<string>
             {
                 Success = false,
                 Details = new StatusDetails
@@ -114,7 +114,7 @@ public class UserService : IUserService
             };
         }
 
-        return new ServiceResponse<UserDetailsResponse>
+        return new ServiceResponse<string>
         {
             Success = true,
             Details = new StatusDetails
