@@ -61,7 +61,7 @@ public interface IUserService
     /// </remarks>
     public Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync();
 
-    
+
     /// <summary>
     /// Asynchronously retrieves data about specific user.
     /// </summary>
