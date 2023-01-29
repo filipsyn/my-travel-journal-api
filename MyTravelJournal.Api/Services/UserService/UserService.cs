@@ -95,6 +95,8 @@ public class UserService : IUserService
     public async Task<ServiceResponse<string>> CreateAsync(CreateUserRequest request)
     {
         var user = _mapper.Map<User>(request);
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+        
         _db.Users.Add(user);
 
         try
