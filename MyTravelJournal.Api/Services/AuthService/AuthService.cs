@@ -1,7 +1,5 @@
-using AutoMapper;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
-using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Services.UserService;
 
 namespace MyTravelJournal.Api.Services.AuthService;
@@ -9,13 +7,12 @@ namespace MyTravelJournal.Api.Services.AuthService;
 public class AuthService : IAuthService
 {
     private readonly IUserService _userService;
-    private readonly IMapper _mapper;
 
-    public AuthService(IUserService userService, IMapper mapper)
+    public AuthService(IUserService userService)
     {
         _userService = userService;
-        _mapper = mapper;
     }
+
     public async Task<ServiceResponse<string>> RegisterAsync(CreateUserRequest request)
     {
         var foundUser = await _userService.GetByUsernameAsync(request.Username);
@@ -32,9 +29,6 @@ public class AuthService : IAuthService
             };
         }
 
-        var user = _mapper.Map<User>(request);
-
         return await _userService.CreateAsync(request);
     }
-
 }
