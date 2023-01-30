@@ -8,6 +8,7 @@ using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Services.AuthService;
 using MyTravelJournal.Api.Services.UserService;
 using Npgsql;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,16 @@ builder.Services.AddSwaggerGen(options =>
             Title = "My Travel Journal",
             Description = "REST API for managing information about trips, users and locations",
         });
+        
+        options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+        {
+            Description = "Standard authorization header using the Bearer scheme",
+            In = ParameterLocation.Header,
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+        });
+        
+        options.OperationFilter<SecurityRequirementsOperationFilter>();
 
         var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
