@@ -1,4 +1,8 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Data;
@@ -10,11 +14,13 @@ public class AuthService : IAuthService
 {
     private readonly IUserService _userService;
     private readonly DataContext _db;
+    private readonly IConfiguration _configuration;
 
-    public AuthService(IUserService userService, DataContext db)
+    public AuthService(IUserService userService, DataContext db, IConfiguration configuration)
     {
         _userService = userService;
         _db = db;
+        _configuration = configuration;
     }
 
     public async Task<ServiceResponse<string>> RegisterAsync(CreateUserRequest request)
@@ -67,11 +73,13 @@ public class AuthService : IAuthService
         }
 
         // Generate JWT token
+        var foundUser = await _userService.GetByUsernameAsync(user.Data!.Username);
+        var token = GenerateJwtToken(foundUser.Data!);
 
         return new ServiceResponse<string>
         {
             // Return Token in Data
-            // Data = token
+            Data = token,
             Success = true,
             Details = new StatusDetails
             {
@@ -85,5 +93,28 @@ public class AuthService : IAuthService
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username);
         return user is not null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+    }
+
+    private string GenerateJwtToken(UserDetailsResponse user)
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Username),
+        };
+
+        var key = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
+
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.Now.AddDays(1),
+            signingCredentials: credentials
+        );
+
+        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+        return jwt;
     }
 }
