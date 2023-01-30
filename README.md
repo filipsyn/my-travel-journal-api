@@ -38,7 +38,6 @@ cd MyTravelJournal.Api
 
 5. Apply migrations
 ```shell
-dotnet ef migrations add InitialMigration
 dotnet ef database update
 ```
 
