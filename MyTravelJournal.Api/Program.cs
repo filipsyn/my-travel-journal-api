@@ -1,5 +1,8 @@
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Services.AuthService;
@@ -34,6 +37,19 @@ builder.Services.AddSwaggerGen(options =>
     }
 );
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey =
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+    };
+});
+
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(connectionString)
 );
@@ -53,6 +69,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UseAuthorization();
 
