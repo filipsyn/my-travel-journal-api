@@ -16,8 +16,6 @@ public static class ApiRoutes
 
         public const string GetUserById = "{id:int}";
 
-        public const string CreateUser = "";
-
         public const string DeleteUser = "{id:int}";
 
         public const string UpdateUser = "{id:int}";
