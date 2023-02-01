@@ -49,24 +49,6 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Creates new user
-    /// </summary>
-    /// <param name="request"></param>
-    /// <response code="200">New user was successfully added</response>
-    /// <response code="409">Raised error when sending data to database</response>
-    [HttpPost(ApiRoutes.User.CreateUser)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status409Conflict)]
-    public async Task<ActionResult> CreateUser([FromBody] CreateUserRequest request)
-    {
-        // TODO: Document response code 204
-        // TODO: Change response to Created and fetch new resource URI
-        var response = await _userService.CreateAsync(request);
-
-        return StatusCode(response.Details.Code, response);
-    }
-
-    /// <summary>
     /// Deletes specific user
     /// </summary>
     /// <param name="id">ID of user to be deleted</param>
