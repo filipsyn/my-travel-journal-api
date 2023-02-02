@@ -81,26 +81,16 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException ex)
         {
-            return new ServiceResponse<string>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status409Conflict,
-                    Message = ex.ToString(),
-                }
-            };
+            return new ServiceResponse<string>(
+                StatusCodes.Status409Conflict,
+                ex.ToString()
+            );
         }
 
-        return new ServiceResponse<string>
-        {
-            Success = true,
-            Details = new StatusDetails
-            {
-                Code = StatusCodes.Status200OK,
-                Message = "User was successfully created."
-            }
-        };
+        return new ServiceResponse<string>(
+            StatusCodes.Status200OK,
+            "User was successfully created."
+        );
     }
 
 
@@ -110,29 +100,19 @@ public class UserService : IUserService
         var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
         if (user is null)
         {
-            return new ServiceResponse<UserDetailsResponse>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status404NotFound,
-                    Message = "User with this ID was not found."
-                }
-            };
+            return new ServiceResponse<UserDetailsResponse>(
+                StatusCodes.Status404NotFound,
+                "User with this ID was not found."
+            );
         }
 
         var patchedUser = _mapper.Map<JsonPatchDocument<User>>(patchRequest);
         if (patchedUser is null)
         {
-            return new ServiceResponse<UserDetailsResponse>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status500InternalServerError,
-                    Message = "Mapping of objects was unsuccessful."
-                }
-            };
+            return new ServiceResponse<UserDetailsResponse>(
+                StatusCodes.Status500InternalServerError,
+                "Mapping of objects was unsuccessful."
+            );
         }
 
         patchedUser.ApplyTo(user);
@@ -143,27 +123,16 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException ex)
         {
-            return new ServiceResponse<UserDetailsResponse>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status409Conflict,
-                    Message = ex.ToString()
-                }
-            };
+            return new ServiceResponse<UserDetailsResponse>(
+                StatusCodes.Status409Conflict,
+                ex.ToString()
+            );
         }
 
-
-        return new ServiceResponse<UserDetailsResponse>
-        {
-            Success = true,
-            Details = new StatusDetails
-            {
-                Code = StatusCodes.Status200OK,
-                Message = "User was successfully updated."
-            }
-        };
+        return new ServiceResponse<UserDetailsResponse>(
+            StatusCodes.Status200OK,
+            "User was successfully updated."
+        );
     }
 
 
@@ -172,15 +141,10 @@ public class UserService : IUserService
         var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
         if (user is null)
         {
-            return new ServiceResponse<UserDetailsResponse>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status404NotFound,
-                    Message = "User with this ID was not found."
-                }
-            };
+            return new ServiceResponse<UserDetailsResponse>(
+                StatusCodes.Status404NotFound,
+                "User with this ID was not found."
+            );
         }
 
         _db.Users.Remove(user);
@@ -202,14 +166,9 @@ public class UserService : IUserService
             };
         }
 
-        return new ServiceResponse<UserDetailsResponse>
-        {
-            Success = true,
-            Details = new StatusDetails
-            {
-                Code = StatusCodes.Status200OK,
-                Message = "User was successfully deleted."
-            }
-        };
+        return new ServiceResponse<UserDetailsResponse>(
+            StatusCodes.Status200OK,
+            "User was successfully deleted."
+        );
     }
 }
