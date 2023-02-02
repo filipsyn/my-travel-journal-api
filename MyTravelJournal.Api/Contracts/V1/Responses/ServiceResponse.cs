@@ -34,9 +34,4 @@ public class ServiceResponse<T>
 
         Data = data;
     }
-
-
-    public ServiceResponse()
-    {
-    }
 }
