@@ -155,15 +155,10 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException ex)
         {
-            return new ServiceResponse<UserDetailsResponse>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status409Conflict,
-                    Message = ex.ToString()
-                }
-            };
+            return new ServiceResponse<UserDetailsResponse>(
+                StatusCodes.Status409Conflict,
+                ex.ToString()
+            );
         }
 
         return new ServiceResponse<UserDetailsResponse>(
