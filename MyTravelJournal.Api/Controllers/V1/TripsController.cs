@@ -25,15 +25,11 @@ public class TripsController : ControllerBase
     public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetAll()
     {
         var trips = await _db.Trips.ToListAsync();
-        return new ServiceResponse<IEnumerable<TripDetailsResponse>>
-        {
-            Success = true,
-            Data = _mapper.Map<IEnumerable<TripDetailsResponse>>(trips),
-            Details = new StatusDetails
-            {
-                Code = StatusCodes.Status200OK,
-                Message = "List of trips successfully retrieved."
-            }
-        };
+        
+        return new ServiceResponse<IEnumerable<TripDetailsResponse>>(
+            StatusCodes.Status200OK,
+            "List of trips successfully retrieved.",
+            _mapper.Map<IEnumerable<TripDetailsResponse>>(trips)
+        );
     }
 }
