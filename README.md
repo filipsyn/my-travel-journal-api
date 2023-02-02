@@ -23,7 +23,7 @@ git clone git@github.com:filipsyn/my-travel-journal-api.git
 
 2. Change into project directory
 ```shell
-cd api/
+cd MyTravelJournal.Api/
 ```
 
 3. Install Entity Framework tool
