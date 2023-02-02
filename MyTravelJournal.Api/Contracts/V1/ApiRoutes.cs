@@ -29,4 +29,9 @@ public static class ApiRoutes
 
         public const string Login = "login";
     }
+
+    public static class Trip
+    {
+        public const string ControllerUrl = Base + "trips";
+    }
 }
