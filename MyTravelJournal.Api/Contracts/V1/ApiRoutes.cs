@@ -33,5 +33,7 @@ public static class ApiRoutes
     public static class Trip
     {
         public const string ControllerUrl = Base + "trips";
+
+        public const string GetAll = "";
     }
 }
