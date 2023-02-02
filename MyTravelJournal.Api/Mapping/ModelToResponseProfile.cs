@@ -10,5 +10,6 @@ public class ModelToResponseProfile: Profile
     {
         
         CreateMap<User, UserDetailsResponse>();
+        CreateMap<Trip, TripDetailsResponse>();
     } 
 }
