@@ -8,4 +8,7 @@ public class Trip
     public string Location { get; set; } = string.Empty;
     public DateTime Start { get; set; } = DateTime.Now;
     public DateTime End { get; set; } = DateTime.Now;
+
+    public int UserId { get; set; }
+    public User? User { get; set; }
 }
