@@ -10,7 +10,7 @@ namespace MyTravelJournal.Api.Contracts.V1.Responses;
 public class ServiceResponse<T>
 {
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public T? Data { get; init; } = default(T);
+    public T? Data { get; init; }
 
     [JsonIgnore] public bool Success { get; init; }
     public StatusDetails Details { get; init; } = new();
