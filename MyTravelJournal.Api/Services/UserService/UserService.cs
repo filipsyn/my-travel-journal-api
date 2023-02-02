@@ -37,27 +37,17 @@ public class UserService : IUserService
 
         if (user is null)
         {
-            return new ServiceResponse<UserDetailsResponse>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status404NotFound,
-                    Message = "User with this ID was not found."
-                }
-            };
+            return new ServiceResponse<UserDetailsResponse>(
+                StatusCodes.Status404NotFound,
+                "User with this ID was not found."
+            );
         }
 
-        return new ServiceResponse<UserDetailsResponse>
-        {
-            Success = true,
-            Data = _mapper.Map<UserDetailsResponse>(user),
-            Details = new StatusDetails
-            {
-                Code = StatusCodes.Status200OK,
-                Message = "User successfully retrieved"
-            }
-        };
+        return new ServiceResponse<UserDetailsResponse>(
+            StatusCodes.Status200OK,
+            "User successfully retrieved",
+            _mapper.Map<UserDetailsResponse>(user)
+        );
     }
 
     public async Task<ServiceResponse<UserDetailsResponse>> GetByUsernameAsync(string username)
