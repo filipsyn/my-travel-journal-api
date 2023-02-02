@@ -28,15 +28,11 @@ public class AuthService : IAuthService
         var foundUser = await _userService.GetByUsernameAsync(request.Username);
         if (foundUser.Success)
         {
-            return new ServiceResponse<string>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status400BadRequest,
-                    Message = "User with this username already exists."
-                }
-            };
+            return new ServiceResponse<string>(
+                StatusCodes.Status400BadRequest,
+                "User with this username already exists.",
+                false
+            );
         }
 
         return await _userService.CreateAsync(request);
@@ -47,46 +43,30 @@ public class AuthService : IAuthService
         var user = await _userService.GetByUsernameAsync(request.Username);
         if (!user.Success)
         {
-            return new ServiceResponse<string>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status404NotFound,
-                    Message = "User with this username doesn't exist."
-                }
-            };
+            return new ServiceResponse<string>(
+                StatusCodes.Status404NotFound,
+                "User with this username doesn't exist."
+            );
         }
 
         // Authenticate password
         if (!await VerifyPasswordAsync(request.Username, request.Password))
         {
-            return new ServiceResponse<string>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status400BadRequest,
-                    Message = "Incorrect password"
-                }
-            };
+            return new ServiceResponse<string>(
+                StatusCodes.Status400BadRequest,
+                "Incorrect password"
+            );
         }
 
         // Generate JWT token
         var foundUser = await _userService.GetByUsernameAsync(user.Data!.Username);
         var token = GenerateJwtToken(foundUser.Data!);
 
-        return new ServiceResponse<string>
-        {
-            // Return Token in Data
-            Data = token,
-            Success = true,
-            Details = new StatusDetails
-            {
-                Code = StatusCodes.Status200OK,
-                Message = "User successfully logged in."
-            }
-        };
+        return new ServiceResponse<string>(
+            StatusCodes.Status200OK,
+            "User successfully logged in.",
+            token
+        );
     }
 
     private async Task<bool> VerifyPasswordAsync(string username, string password)
