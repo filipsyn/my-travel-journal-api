@@ -22,16 +22,12 @@ public class UserService : IUserService
     public async Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync()
     {
         var users = await _db.Users.ToListAsync();
-        return new ServiceResponse<IEnumerable<UserDetailsResponse>>
-        {
-            Success = true,
-            Data = _mapper.Map<IEnumerable<UserDetailsResponse>>(users),
-            Details = new StatusDetails
-            {
-                Code = StatusCodes.Status200OK,
-                Message = "List of users successfully retrieved."
-            }
-        };
+
+        return new ServiceResponse<IEnumerable<UserDetailsResponse>>(
+            StatusCodes.Status200OK,
+            "List of users successfully retrieved.",
+            _mapper.Map<IEnumerable<UserDetailsResponse>>(users)
+        );
     }
 
 
@@ -96,7 +92,7 @@ public class UserService : IUserService
     {
         var user = _mapper.Map<User>(request);
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-        
+
         _db.Users.Add(user);
 
         try
