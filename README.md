@@ -18,7 +18,7 @@ Provides REST API for communication between client applications and database.
 ### Step-by-step guide
 1. Clone the repo
 ```shell
-git clone git@gitlab.com:mytraveljournal/api.git
+git clone git@github.com:filipsyn/my-travel-journal-api.git
 ```
 
 2. Change into project directory
