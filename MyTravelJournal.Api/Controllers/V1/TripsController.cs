@@ -1,5 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Contracts.V1;
+using MyTravelJournal.Api.Contracts.V1.Responses;
+using MyTravelJournal.Api.Data;
 
 namespace MyTravelJournal.Api.Controllers.V1;
 
@@ -8,4 +12,28 @@ namespace MyTravelJournal.Api.Controllers.V1;
 [Produces("application/json")]
 public class TripsController : ControllerBase
 {
+    private readonly IMapper _mapper;
+    private readonly DataContext _db;
+
+    public TripsController(IMapper mapper, DataContext db)
+    {
+        _mapper = mapper;
+        _db = db;
+    }
+
+    [HttpGet(ApiRoutes.Trip.GetAll)]
+    public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetAll()
+    {
+        var trips = await _db.Trips.ToListAsync();
+        return new ServiceResponse<IEnumerable<TripDetailsResponse>>
+        {
+            Success = true,
+            Data = _mapper.Map<IEnumerable<TripDetailsResponse>>(trips),
+            Details = new StatusDetails
+            {
+                Code = StatusCodes.Status200OK,
+                Message = "List of trips successfully retrieved."
+            }
+        };
+    }
 }
