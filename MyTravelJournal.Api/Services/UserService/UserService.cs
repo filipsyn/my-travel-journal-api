@@ -55,27 +55,17 @@ public class UserService : IUserService
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username);
         if (user is null)
         {
-            return new ServiceResponse<UserDetailsResponse>
-            {
-                Success = false,
-                Details = new StatusDetails
-                {
-                    Code = StatusCodes.Status404NotFound,
-                    Message = "User with this username doesn't exist."
-                }
-            };
+            return new ServiceResponse<UserDetailsResponse>(
+                StatusCodes.Status404NotFound,
+                "User with this username doesn't exist."
+            );
         }
 
-        return new ServiceResponse<UserDetailsResponse>
-        {
-            Success = true,
-            Data = _mapper.Map<UserDetailsResponse>(user),
-            Details = new StatusDetails
-            {
-                Code = StatusCodes.Status200OK,
-                Message = "User successfully found."
-            }
-        };
+        return new ServiceResponse<UserDetailsResponse>(
+            StatusCodes.Status200OK,
+            "User successfully found.",
+            _mapper.Map<UserDetailsResponse>(user)
+        );
     }
 
     public async Task<ServiceResponse<string>> CreateAsync(CreateUserRequest request)
