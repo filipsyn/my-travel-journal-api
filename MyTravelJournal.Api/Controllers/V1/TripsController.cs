@@ -2,8 +2,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Contracts.V1;
+using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Data;
+using MyTravelJournal.Api.Models;
 
 namespace MyTravelJournal.Api.Controllers.V1;
 
@@ -51,6 +53,31 @@ public class TripsController : ControllerBase
             StatusCodes.Status200OK,
             "Trip with this ID was found.",
             _mapper.Map<TripDetailsResponse>(trip)
+        );
+    }
+
+    [HttpPost(ApiRoutes.Trip.Create)]
+    public async Task<ServiceResponse<TripDetailsResponse>> Create([FromBody] CreateTripRequest request)
+    {
+        var trip = _mapper.Map<Trip>(request);
+
+        _db.Trips.Add(trip);
+
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            return new ServiceResponse<TripDetailsResponse>(
+                StatusCodes.Status409Conflict,
+                ex.ToString()
+            );
+        }
+
+        return new ServiceResponse<TripDetailsResponse>(
+            StatusCodes.Status200OK,
+            "Trip was successfully added."
         );
     }
 }
