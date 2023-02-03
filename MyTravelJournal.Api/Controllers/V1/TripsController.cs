@@ -25,11 +25,32 @@ public class TripsController : ControllerBase
     public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetAll()
     {
         var trips = await _db.Trips.ToListAsync();
-        
+
         return new ServiceResponse<IEnumerable<TripDetailsResponse>>(
             StatusCodes.Status200OK,
             "List of trips successfully retrieved.",
             _mapper.Map<IEnumerable<TripDetailsResponse>>(trips)
+        );
+    }
+
+
+    [HttpGet(ApiRoutes.Trip.GetById)]
+    public async Task<ServiceResponse<TripDetailsResponse>> GetById(int id)
+    {
+        var trip = await _db.Trips.FirstOrDefaultAsync(t => t.TripId == id);
+
+        if (trip is null)
+        {
+            return new ServiceResponse<TripDetailsResponse>(
+                StatusCodes.Status404NotFound,
+                "Trip with this ID was not found."
+            );
+        }
+
+        return new ServiceResponse<TripDetailsResponse>(
+            StatusCodes.Status200OK,
+            "Trip with this ID was found.",
+            _mapper.Map<TripDetailsResponse>(trip)
         );
     }
 }
