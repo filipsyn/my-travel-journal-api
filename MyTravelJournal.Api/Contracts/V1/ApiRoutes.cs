@@ -35,5 +35,7 @@ public static class ApiRoutes
         public const string ControllerUrl = Base + "trips";
 
         public const string GetAll = "";
+        
+        private const string GetById = "{id:int}";
     }
 }
