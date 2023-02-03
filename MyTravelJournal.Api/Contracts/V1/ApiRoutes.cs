@@ -37,5 +37,7 @@ public static class ApiRoutes
         public const string GetAll = "";
 
         public const string GetById = "{id:int}";
+
+        public const string Create = "";
     }
 }
