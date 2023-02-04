@@ -41,5 +41,7 @@ public static class ApiRoutes
         public const string Create = "";
 
         public const string Update = "{id:int}";
+
+        public const string Delete = "{id:int}";
     }
 }
