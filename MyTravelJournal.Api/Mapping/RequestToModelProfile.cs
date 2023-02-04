@@ -16,5 +16,7 @@ public class RequestToModelProfile : Profile
         CreateMap<Operation<UpdateUserDetailsRequest>, Operation<User>>();
 
         CreateMap<CreateTripRequest, Trip>();
+        CreateMap<JsonPatchDocument<UpdateTripRequest>, JsonPatchDocument<Trip>>();
+        CreateMap<Operation<UpdateTripRequest>, Operation<Trip>>();
     }
 }
