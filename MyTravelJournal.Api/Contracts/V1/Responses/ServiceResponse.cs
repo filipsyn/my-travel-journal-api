@@ -13,21 +13,21 @@ public class ServiceResponse<T>
     public T? Data { get; init; }
 
     [JsonIgnore] public bool Success { get; init; }
-    public StatusDetails Details { get; init; } = new();
+    public StatusDetails Status { get; init; } = new();
 
 
     public ServiceResponse(int code, string message, bool success, T? data = default(T))
     {
-        Details.Code = code;
-        Details.Message = !message.IsNullOrEmpty() ? message : string.Empty;
+        Status.Code = code;
+        Status.Message = !message.IsNullOrEmpty() ? message : string.Empty;
         Success = success;
         Data = data;
     }
 
     public ServiceResponse(int code, string message, T? data = default(T))
     {
-        Details.Code = code;
-        Details.Message = !message.IsNullOrEmpty() ? message : string.Empty;
+        Status.Code = code;
+        Status.Message = !message.IsNullOrEmpty() ? message : string.Empty;
 
         // In this variant of constructor the status is automatically decided from the status code.
         Success = code is >= 100 and < 400;

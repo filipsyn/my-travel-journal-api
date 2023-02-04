@@ -29,7 +29,7 @@ public class UsersController : ControllerBase
     {
         var response = await _userService.GetAllAsync();
 
-        return StatusCode(response.Details.Code, response);
+        return StatusCode(response.Status.Code, response);
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ public class UsersController : ControllerBase
     {
         var response = await _userService.GetByIdAsync(id);
 
-        return StatusCode(response.Details.Code, response);
+        return StatusCode(response.Status.Code, response);
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class UsersController : ControllerBase
     {
         var response = await _userService.DeleteByIdAsync(id);
 
-        return StatusCode(response.Details.Code, response);
+        return StatusCode(response.Status.Code, response);
     }
 
     /// <summary>Performs partial update of specific user's data.</summary>
@@ -104,6 +104,6 @@ public class UsersController : ControllerBase
 
         var response = await _userService.UpdateAsync(patch, id);
 
-        return StatusCode(response.Details.Code, response);
+        return StatusCode(response.Status.Code, response);
     }
 }

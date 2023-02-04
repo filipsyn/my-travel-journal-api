@@ -21,13 +21,13 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<ServiceResponse<string>>> Register([FromBody] CreateUserRequest request)
     {
         var response = await _authService.RegisterAsync(request);
-        return StatusCode(response.Details.Code, response);
+        return StatusCode(response.Status.Code, response);
     }
 
     [HttpPost(ApiRoutes.Auth.Login)]
     public async Task<ActionResult<ServiceResponse<string>>> Login([FromBody] LoginRequest request)
     {
         var response = await _authService.LoginAsync(request);
-        return StatusCode(response.Details.Code, response);
+        return StatusCode(response.Status.Code, response);
     }
 }
