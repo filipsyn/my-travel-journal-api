@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Services.AuthService;
+using MyTravelJournal.Api.Services.TripService;
 using MyTravelJournal.Api.Services.UserService;
 using Npgsql;
 using Swashbuckle.AspNetCore.Filters;
@@ -68,6 +69,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITripService, TripService>();
 
 
 var app = builder.Build();
