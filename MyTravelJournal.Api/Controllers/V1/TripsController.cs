@@ -28,15 +28,11 @@ public class TripsController : ControllerBase
     }
 
     [HttpGet(ApiRoutes.Trip.GetAll)]
-    public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetAll()
+    public async Task<ActionResult<ServiceResponse<IEnumerable<TripDetailsResponse>>>> GetAll()
     {
-        var trips = await _db.Trips.ToListAsync();
-
-        return new ServiceResponse<IEnumerable<TripDetailsResponse>>(
-            StatusCodes.Status200OK,
-            "List of trips successfully retrieved.",
-            _mapper.Map<IEnumerable<TripDetailsResponse>>(trips)
-        );
+        var response = await _tripService.GetAllAsync();
+        
+        return StatusCode(response.Status.Code, response);
     }
 
 
