@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Contracts.V1;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
-using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Services.TripService;
 
 namespace MyTravelJournal.Api.Controllers.V1;
@@ -14,12 +12,10 @@ namespace MyTravelJournal.Api.Controllers.V1;
 [Produces("application/json")]
 public class TripsController : ControllerBase
 {
-    private readonly DataContext _db;
     private readonly ITripService _tripService;
 
-    public TripsController(DataContext db, ITripService tripService)
+    public TripsController(ITripService tripService)
     {
-        _db = db;
         _tripService = tripService;
     }
 
