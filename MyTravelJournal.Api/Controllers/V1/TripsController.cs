@@ -31,7 +31,7 @@ public class TripsController : ControllerBase
     public async Task<ActionResult<ServiceResponse<IEnumerable<TripDetailsResponse>>>> GetAll()
     {
         var response = await _tripService.GetAllAsync();
-        
+
         return StatusCode(response.Status.Code, response);
     }
 
@@ -45,28 +45,11 @@ public class TripsController : ControllerBase
     }
 
     [HttpPost(ApiRoutes.Trip.Create)]
-    public async Task<ServiceResponse<TripDetailsResponse>> Create([FromBody] CreateTripRequest request)
+    public async Task<ActionResult<ServiceResponse<TripDetailsResponse>>> Create([FromBody] CreateTripRequest request)
     {
-        var trip = _mapper.Map<Trip>(request);
+        var response = await _tripService.CreateAsync(request);
 
-        _db.Trips.Add(trip);
-
-        try
-        {
-            await _db.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException ex)
-        {
-            return new ServiceResponse<TripDetailsResponse>(
-                StatusCodes.Status409Conflict,
-                ex.ToString()
-            );
-        }
-
-        return new ServiceResponse<TripDetailsResponse>(
-            StatusCodes.Status200OK,
-            "Trip was successfully added."
-        );
+        return StatusCode(response.Status.Code, response);
     }
 
     [HttpPatch(ApiRoutes.Trip.Update)]
