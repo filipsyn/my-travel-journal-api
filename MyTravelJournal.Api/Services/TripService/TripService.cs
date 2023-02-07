@@ -1,7 +1,9 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Data;
+using MyTravelJournal.Api.Models;
 
 namespace MyTravelJournal.Api.Services.TripService;
 
@@ -15,6 +17,7 @@ public class TripService : ITripService
         _db = db;
         _mapper = mapper;
     }
+
     public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetAllAsync()
     {
         var trips = await _db.Trips.ToListAsync();
@@ -42,6 +45,30 @@ public class TripService : ITripService
             StatusCodes.Status200OK,
             "Trip with this ID was found.",
             _mapper.Map<TripDetailsResponse>(trip)
+        );
+    }
+
+    public async Task<ServiceResponse<TripDetailsResponse>> CreateAsync(CreateTripRequest request)
+    {
+        var trip = _mapper.Map<Trip>(request);
+
+        _db.Trips.Add(trip);
+
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            return new ServiceResponse<TripDetailsResponse>(
+                StatusCodes.Status409Conflict,
+                ex.ToString()
+            );
+        }
+
+        return new ServiceResponse<TripDetailsResponse>(
+            StatusCodes.Status200OK,
+            "Trip was successfully added."
         );
     }
 }
