@@ -7,6 +7,7 @@ using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Models;
+using MyTravelJournal.Api.Services.TripService;
 
 namespace MyTravelJournal.Api.Controllers.V1;
 
@@ -17,11 +18,13 @@ public class TripsController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly DataContext _db;
+    private readonly ITripService _tripService;
 
-    public TripsController(IMapper mapper, DataContext db)
+    public TripsController(IMapper mapper, DataContext db, ITripService tripService)
     {
         _mapper = mapper;
         _db = db;
+        _tripService = tripService;
     }
 
     [HttpGet(ApiRoutes.Trip.GetAll)]
