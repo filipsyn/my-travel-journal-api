@@ -58,34 +58,10 @@ public class TripsController : ControllerBase
     }
 
     [HttpDelete(ApiRoutes.Trip.Delete)]
-    public async Task<ServiceResponse<TripDetailsResponse>> Delete(int id)
+    public async Task<ActionResult<ServiceResponse<TripDetailsResponse>>> Delete(int id)
     {
-        var trip = await _db.Trips.FirstOrDefaultAsync(t => t.TripId == id);
-        if (trip is null)
-        {
-            return new ServiceResponse<TripDetailsResponse>(
-                StatusCodes.Status404NotFound,
-                "Trip with this ID was not found"
-            );
-        }
+        var response = await _tripService.DeleteAsync(id);
 
-        _db.Trips.Remove(trip);
-
-        try
-        {
-            await _db.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException ex)
-        {
-            return new ServiceResponse<TripDetailsResponse>(
-                StatusCodes.Status409Conflict,
-                ex.ToString()
-            );
-        }
-
-        return new ServiceResponse<TripDetailsResponse>(
-            StatusCodes.Status200OK,
-            "Trip was successfully deleted."
-        );
+        return StatusCode(response.Status.Code, response);
     }
 }
