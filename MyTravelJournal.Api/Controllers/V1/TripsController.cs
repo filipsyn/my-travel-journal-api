@@ -6,7 +6,6 @@ using MyTravelJournal.Api.Contracts.V1;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Data;
-using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Services.TripService;
 
 namespace MyTravelJournal.Api.Controllers.V1;
