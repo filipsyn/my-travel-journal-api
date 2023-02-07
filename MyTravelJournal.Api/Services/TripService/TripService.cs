@@ -25,4 +25,23 @@ public class TripService : ITripService
             _mapper.Map<IEnumerable<TripDetailsResponse>>(trips)
         );
     }
+
+    public async Task<ServiceResponse<TripDetailsResponse>> GetByIdAsync(int id)
+    {
+        var trip = await _db.Trips.FirstOrDefaultAsync(t => t.TripId == id);
+
+        if (trip is null)
+        {
+            return new ServiceResponse<TripDetailsResponse>(
+                StatusCodes.Status404NotFound,
+                "Trip with this ID was not found."
+            );
+        }
+
+        return new ServiceResponse<TripDetailsResponse>(
+            StatusCodes.Status200OK,
+            "Trip with this ID was found.",
+            _mapper.Map<TripDetailsResponse>(trip)
+        );
+    }
 }
