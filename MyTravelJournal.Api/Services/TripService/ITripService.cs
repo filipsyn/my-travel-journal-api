@@ -14,4 +14,6 @@ public interface ITripService
 
     public Task<ServiceResponse<TripDetailsResponse>>
         UpdateAsync(JsonPatchDocument<UpdateTripRequest> request, int id);
+
+    public Task<ServiceResponse<TripDetailsResponse>> DeleteAsync(int id);
 }
