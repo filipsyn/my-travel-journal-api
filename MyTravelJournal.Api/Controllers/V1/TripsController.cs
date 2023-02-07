@@ -37,23 +37,11 @@ public class TripsController : ControllerBase
 
 
     [HttpGet(ApiRoutes.Trip.GetById)]
-    public async Task<ServiceResponse<TripDetailsResponse>> GetById(int id)
+    public async Task<ActionResult<ServiceResponse<TripDetailsResponse>>> GetById(int id)
     {
-        var trip = await _db.Trips.FirstOrDefaultAsync(t => t.TripId == id);
+        var response = await _tripService.GetByIdAsync(id);
 
-        if (trip is null)
-        {
-            return new ServiceResponse<TripDetailsResponse>(
-                StatusCodes.Status404NotFound,
-                "Trip with this ID was not found."
-            );
-        }
-
-        return new ServiceResponse<TripDetailsResponse>(
-            StatusCodes.Status200OK,
-            "Trip with this ID was found.",
-            _mapper.Map<TripDetailsResponse>(trip)
-        );
+        return StatusCode(response.Status.Code, response);
     }
 
     [HttpPost(ApiRoutes.Trip.Create)]
