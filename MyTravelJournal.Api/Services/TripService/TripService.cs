@@ -111,4 +111,35 @@ public class TripService : ITripService
             "Trip was successfully updated."
         );
     }
+
+    public async Task<ServiceResponse<TripDetailsResponse>> DeleteAsync(int id)
+    {
+        var trip = await _db.Trips.FirstOrDefaultAsync(t => t.TripId == id);
+        if (trip is null)
+        {
+            return new ServiceResponse<TripDetailsResponse>(
+                StatusCodes.Status404NotFound,
+                "Trip with this ID was not found"
+            );
+        }
+
+        _db.Trips.Remove(trip);
+
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            return new ServiceResponse<TripDetailsResponse>(
+                StatusCodes.Status409Conflict,
+                ex.ToString()
+            );
+        }
+
+        return new ServiceResponse<TripDetailsResponse>(
+            StatusCodes.Status200OK,
+            "Trip was successfully deleted."
+        );
+    }
 }
