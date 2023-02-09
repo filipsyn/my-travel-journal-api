@@ -142,4 +142,15 @@ public class TripService : ITripService
             "Trip was successfully deleted."
         );
     }
+
+    public async Task<ServiceResponse<List<TripDetailsResponse>>> GetTripsByUser(int userId)
+    {
+        var trips = await _db.Trips.Where(t => t.UserId == userId).ToListAsync();
+
+        return new ServiceResponse<List<TripDetailsResponse>>(
+            StatusCodes.Status200OK,
+            "Ok",
+            _mapper.Map<List<TripDetailsResponse>>(trips)
+        );
+    }
 }
