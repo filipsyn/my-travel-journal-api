@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyTravelJournal.Api.Contracts.V1;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
+using MyTravelJournal.Api.Services.TripService;
 using MyTravelJournal.Api.Services.UserService;
 
 namespace MyTravelJournal.Api.Controllers.V1;
@@ -13,10 +14,12 @@ namespace MyTravelJournal.Api.Controllers.V1;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly ITripService _tripService;
 
-    public UsersController(IUserService userService)
+    public UsersController(IUserService userService, ITripService tripService)
     {
         _userService = userService;
+        _tripService = tripService;
     }
 
     /// <summary>
@@ -103,6 +106,14 @@ public class UsersController : ControllerBase
             return BadRequest(ModelState);
 
         var response = await _userService.UpdateAsync(patch, id);
+
+        return StatusCode(response.Status.Code, response);
+    }
+
+    [HttpGet(ApiRoutes.User.GetTripsForUser)]
+    public async Task<ActionResult<ServiceResponse<List<TripDetailsResponse>>>> GetTripsForUser(int id)
+    {
+        var response = await _tripService.GetTripsByUser(id);
 
         return StatusCode(response.Status.Code, response);
     }
