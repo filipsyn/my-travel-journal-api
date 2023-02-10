@@ -113,7 +113,7 @@ public class UsersController : ControllerBase
     [HttpGet(ApiRoutes.User.GetTripsForUser)]
     public async Task<ActionResult<ServiceResponse<List<TripDetailsResponse>>>> GetTripsForUser(int id)
     {
-        var response = await _tripService.GetTripsByUser(id);
+        var response = await _userService.GetTripsForUser(id);
 
         return StatusCode(response.Status.Code, response);
     }
