@@ -5,6 +5,7 @@ using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Models;
+using MyTravelJournal.Api.Services.TripService;
 
 namespace MyTravelJournal.Api.Services.UserService;
 
@@ -12,11 +13,13 @@ public class UserService : IUserService
 {
     private readonly DataContext _db;
     private readonly IMapper _mapper;
+    private readonly ITripService _tripService;
 
-    public UserService(DataContext db, IMapper mapper)
+    public UserService(DataContext db, IMapper mapper, ITripService tripService)
     {
         _db = db;
         _mapper = mapper;
+        _tripService = tripService;
     }
 
     public async Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync()
@@ -164,6 +167,26 @@ public class UserService : IUserService
         return new ServiceResponse<UserDetailsResponse>(
             StatusCodes.Status200OK,
             "User was successfully deleted."
+        );
+    }
+
+    public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetTripsForUser(int id)
+    {
+        var user = await this.GetByIdAsync(id);
+        if (!user.Success)
+        {
+            return new ServiceResponse<IEnumerable<TripDetailsResponse>>(
+                StatusCodes.Status404NotFound,
+                $"User with ID {id} was not found."
+            );
+        }
+
+        var tripsResponse = await _tripService.GetTripsByUser(id);
+
+        return new ServiceResponse<IEnumerable<TripDetailsResponse>>(
+            StatusCodes.Status200OK,
+            $"Trips for user with ID {id} were successfully retrieved.",
+            tripsResponse.Data
         );
     }
 }

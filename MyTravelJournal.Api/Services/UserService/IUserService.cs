@@ -201,4 +201,6 @@ public interface IUserService
     /// </list>
     /// </remarks>
     public Task<ServiceResponse<UserDetailsResponse>> DeleteByIdAsync(int id);
+
+    public Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetTripsForUser(int id);
 }
