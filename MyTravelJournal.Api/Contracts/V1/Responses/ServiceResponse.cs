@@ -6,17 +6,17 @@ namespace MyTravelJournal.Api.Contracts.V1.Responses;
 /// <summary>
 /// Contract defining response of services
 /// </summary>
-/// <typeparam name="T">Type of data returned by service</typeparam>
-public class ServiceResponse<T>
+/// <typeparam name="TData">Type of data returned by service</typeparam>
+public class ServiceResponse<TData>
 {
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public T? Data { get; init; }
+    public TData? Data { get; init; }
 
     [JsonIgnore] public bool Success { get; init; }
     public StatusDetails Status { get; init; } = new();
 
 
-    public ServiceResponse(int code, string message, bool success, T? data = default(T))
+    public ServiceResponse(int code, string message, bool success, TData? data = default(TData))
     {
         Status.Code = code;
         Status.Message = !message.IsNullOrEmpty() ? message : string.Empty;
@@ -24,7 +24,7 @@ public class ServiceResponse<T>
         Data = data;
     }
 
-    public ServiceResponse(int code, string message, T? data = default(T))
+    public ServiceResponse(int code, string message, TData? data = default(TData))
     {
         Status.Code = code;
         Status.Message = !message.IsNullOrEmpty() ? message : string.Empty;
