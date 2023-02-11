@@ -41,7 +41,7 @@ public class UsersController : ControllerBase
     [HttpGet(ApiRoutes.User.GetUserById)]
     [ProducesResponseType(typeof(ServiceResponse<UserDetailsResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<UserDetailsResponse>> GetUserById(int id)
+    public async Task<ActionResult<UserDetailsResponse>> GetById(int id)
     {
         var response = await _userService.GetByIdAsync(id);
 
@@ -59,7 +59,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status409Conflict)]
-    public async Task<ActionResult<int>> DeleteUser(int id)
+    public async Task<ActionResult<int>> Delete(int id)
     {
         var response = await _userService.DeleteByIdAsync(id);
 
@@ -108,7 +108,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet(ApiRoutes.User.GetTripsForUser)]
-    public async Task<ActionResult<ServiceResponse<List<TripDetailsResponse>>>> GetTripsForUser(int id)
+    public async Task<ActionResult<ServiceResponse<List<TripDetailsResponse>>>> GetTripsFor(int id)
     {
         var response = await _userService.GetTripsForUser(id);
 
