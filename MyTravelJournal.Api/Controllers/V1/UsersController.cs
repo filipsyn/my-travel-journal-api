@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MyTravelJournal.Api.Contracts.V1;
@@ -24,6 +25,7 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <response code="200">All users successfully retrieved</response>
     [HttpGet(ApiRoutes.User.GetAllUsers)]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ServiceResponse<IEnumerable<UserDetailsResponse>>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<UserDetailsResponse>>> GetAll()
     {
