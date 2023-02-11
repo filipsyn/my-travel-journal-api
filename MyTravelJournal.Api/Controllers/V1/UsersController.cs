@@ -25,7 +25,7 @@ public class UsersController : ControllerBase
     /// <response code="200">All users successfully retrieved</response>
     [HttpGet(ApiRoutes.User.GetAllUsers)]
     [ProducesResponseType(typeof(ServiceResponse<IEnumerable<UserDetailsResponse>>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<UserDetailsResponse>>> GetAllUsers()
+    public async Task<ActionResult<List<UserDetailsResponse>>> GetAll()
     {
         var response = await _userService.GetAllAsync();
 
