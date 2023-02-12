@@ -3,25 +3,25 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
-using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Models;
+using MyTravelJournal.Api.Repositories.TripRepository;
 
 namespace MyTravelJournal.Api.Services.TripService;
 
 public class TripService : ITripService
 {
-    private readonly DataContext _db;
     private readonly IMapper _mapper;
+    private readonly ITripRepository _tripRepository;
 
-    public TripService(DataContext db, IMapper mapper)
+    public TripService(IMapper mapper, ITripRepository tripRepository)
     {
-        _db = db;
         _mapper = mapper;
+        _tripRepository = tripRepository;
     }
 
     public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetAllAsync()
     {
-        var trips = await _db.Trips.ToListAsync();
+        var trips = await _tripRepository.GetAllAsync();
 
         return new ServiceResponse<IEnumerable<TripDetailsResponse>>(
             StatusCodes.Status200OK,
@@ -32,7 +32,7 @@ public class TripService : ITripService
 
     public async Task<ServiceResponse<TripDetailsResponse>> GetByIdAsync(int id)
     {
-        var trip = await _db.Trips.FirstOrDefaultAsync(t => t.TripId == id);
+        var trip = await _tripRepository.GetByIdAsync(id);
 
         if (trip is null)
         {
@@ -53,11 +53,9 @@ public class TripService : ITripService
     {
         var trip = _mapper.Map<Trip>(request);
 
-        _db.Trips.Add(trip);
-
         try
         {
-            await _db.SaveChangesAsync();
+            await _tripRepository.CreateAsync(trip);
         }
         catch (DbUpdateConcurrencyException ex)
         {
@@ -76,7 +74,8 @@ public class TripService : ITripService
     public async Task<ServiceResponse<TripDetailsResponse>> UpdateAsync(JsonPatchDocument<UpdateTripRequest> request,
         int id)
     {
-        var trip = await _db.Trips.FirstOrDefaultAsync(t => t.TripId == id);
+        var trip = await _tripRepository.GetByIdAsync(id);
+        
         if (trip is null)
         {
             return new ServiceResponse<TripDetailsResponse>(StatusCodes.Status404NotFound,
@@ -96,7 +95,7 @@ public class TripService : ITripService
 
         try
         {
-            await _db.SaveChangesAsync();
+            await _tripRepository.UpdateAsync(trip);
         }
         catch (DbUpdateConcurrencyException ex)
         {
@@ -114,20 +113,9 @@ public class TripService : ITripService
 
     public async Task<ServiceResponse<TripDetailsResponse>> DeleteAsync(int id)
     {
-        var trip = await _db.Trips.FirstOrDefaultAsync(t => t.TripId == id);
-        if (trip is null)
-        {
-            return new ServiceResponse<TripDetailsResponse>(
-                StatusCodes.Status404NotFound,
-                "Trip with this ID was not found"
-            );
-        }
-
-        _db.Trips.Remove(trip);
-
         try
         {
-            await _db.SaveChangesAsync();
+            await _tripRepository.DeleteAsync(id);
         }
         catch (DbUpdateConcurrencyException ex)
         {
@@ -145,7 +133,8 @@ public class TripService : ITripService
 
     public async Task<ServiceResponse<List<TripDetailsResponse>>> GetTripsByUser(int userId)
     {
-        var trips = await _db.Trips.Where(t => t.UserId == userId).ToListAsync();
+        //var trips = await _db.Trips.Where(t => t.UserId == userId).ToListAsync();
+        var trips = await _tripRepository.GetWhereAsync(t => t.UserId == userId);
 
         return new ServiceResponse<List<TripDetailsResponse>>(
             StatusCodes.Status200OK,
