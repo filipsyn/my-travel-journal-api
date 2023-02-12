@@ -1,11 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
-using MyTravelJournal.Api.Data;
+using MyTravelJournal.Api.Repositories.UserRepository;
 using MyTravelJournal.Api.Services.UserService;
 
 namespace MyTravelJournal.Api.Services.AuthService;
@@ -13,14 +12,14 @@ namespace MyTravelJournal.Api.Services.AuthService;
 public class AuthService : IAuthService
 {
     private readonly IUserService _userService;
-    private readonly DataContext _db;
     private readonly IConfiguration _configuration;
+    private readonly IUserRepository _userRepository;
 
-    public AuthService(IUserService userService, DataContext db, IConfiguration configuration)
+    public AuthService(IUserService userService, IConfiguration configuration, IUserRepository userRepository)
     {
         _userService = userService;
-        _db = db;
         _configuration = configuration;
+        _userRepository = userRepository;
     }
 
     public async Task<ServiceResponse<string>> RegisterAsync(CreateUserRequest request)
@@ -71,7 +70,7 @@ public class AuthService : IAuthService
 
     private async Task<bool> VerifyPasswordAsync(string username, string password)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username);
+        var user = await _userRepository.GetByUsernameAsync(username);
         return user is not null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
     }
 
