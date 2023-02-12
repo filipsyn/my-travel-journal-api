@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Models;
@@ -23,6 +24,10 @@ public class TripRepository : ITripRepository
         return await _db.Trips.ToListAsync();
     }
 
+    public async Task<IEnumerable<Trip>> GetWhereAsync(Expression<Func<Trip, bool>> predicate)
+    {
+        return await _db.Trips.Where(predicate).ToListAsync();
+    }
     public async Task CreateAsync(Trip trip)
     {
         _db.Trips.Add(trip);
