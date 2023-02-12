@@ -3,28 +3,28 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
-using MyTravelJournal.Api.Data;
 using MyTravelJournal.Api.Models;
+using MyTravelJournal.Api.Repositories.UserRepository;
 using MyTravelJournal.Api.Services.TripService;
 
 namespace MyTravelJournal.Api.Services.UserService;
 
 public class UserService : IUserService
 {
-    private readonly DataContext _db;
     private readonly IMapper _mapper;
     private readonly ITripService _tripService;
+    private readonly IUserRepository _userRepository;
 
-    public UserService(DataContext db, IMapper mapper, ITripService tripService)
+    public UserService(IMapper mapper, ITripService tripService, IUserRepository userRepository)
     {
-        _db = db;
         _mapper = mapper;
         _tripService = tripService;
+        _userRepository = userRepository;
     }
 
     public async Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync()
     {
-        var users = await _db.Users.ToListAsync();
+        var users = await _userRepository.GetAllAsync();
 
         return new ServiceResponse<IEnumerable<UserDetailsResponse>>(
             StatusCodes.Status200OK,
@@ -36,7 +36,7 @@ public class UserService : IUserService
 
     public async Task<ServiceResponse<UserDetailsResponse>> GetByIdAsync(int id)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        var user = await _userRepository.GetByIdAsync(id);
 
         if (user is null)
         {
@@ -55,7 +55,7 @@ public class UserService : IUserService
 
     public async Task<ServiceResponse<UserDetailsResponse>> GetByUsernameAsync(string username)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username);
+        var user = await _userRepository.GetByUsernameAsync(username);
         if (user is null)
         {
             return new ServiceResponse<UserDetailsResponse>(
@@ -76,11 +76,9 @@ public class UserService : IUserService
         var user = _mapper.Map<User>(request);
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-        _db.Users.Add(user);
-
         try
         {
-            await _db.SaveChangesAsync();
+            await _userRepository.CreateAsync(user);
         }
         catch (DbUpdateConcurrencyException ex)
         {
@@ -100,7 +98,7 @@ public class UserService : IUserService
     public async Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(
         JsonPatchDocument<UpdateUserDetailsRequest> patchRequest, int id)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        var user = await _userRepository.GetByIdAsync(id);
         if (user is null)
         {
             return new ServiceResponse<UserDetailsResponse>(
@@ -122,7 +120,7 @@ public class UserService : IUserService
 
         try
         {
-            await _db.SaveChangesAsync();
+            await _userRepository.UpdateAsync(user);
         }
         catch (DbUpdateConcurrencyException ex)
         {
@@ -141,7 +139,7 @@ public class UserService : IUserService
 
     public async Task<ServiceResponse<UserDetailsResponse>> DeleteByIdAsync(int id)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.UserId == id);
+        var user = await _userRepository.GetByIdAsync(id);
         if (user is null)
         {
             return new ServiceResponse<UserDetailsResponse>(
@@ -150,11 +148,10 @@ public class UserService : IUserService
             );
         }
 
-        _db.Users.Remove(user);
 
         try
         {
-            await _db.SaveChangesAsync();
+            await _userRepository.DeleteAsync(id);
         }
         catch (DbUpdateConcurrencyException ex)
         {
