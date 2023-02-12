@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyTravelJournal.Api.Data;
+using MyTravelJournal.Api.Repositories.TripRepository;
 using MyTravelJournal.Api.Repositories.UserRepository;
 using MyTravelJournal.Api.Services.AuthService;
 using MyTravelJournal.Api.Services.TripService;
@@ -72,6 +73,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITripService, TripService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITripRepository, TripRepository>();
 
 
 var app = builder.Build();
