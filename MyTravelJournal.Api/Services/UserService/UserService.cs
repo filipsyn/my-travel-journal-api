@@ -6,6 +6,7 @@ using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Repositories.UserRepository;
 using MyTravelJournal.Api.Services.TripService;
+using ErrorOr;
 
 namespace MyTravelJournal.Api.Services.UserService;
 
@@ -34,23 +35,15 @@ public class UserService : IUserService
     }
 
 
-    public async Task<ServiceResponse<UserDetailsResponse>> GetByIdAsync(int id)
+    // public async Task<ServiceResponse<UserDetailsResponse>> GetByIdAsync(int id)
+    public async Task<ErrorOr<UserDetailsResponse>> GetByIdAsync(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
 
         if (user is null)
-        {
-            return new ServiceResponse<UserDetailsResponse>(
-                StatusCodes.Status404NotFound,
-                "User with this ID was not found."
-            );
-        }
+            return Errors.User.NotFound;
 
-        return new ServiceResponse<UserDetailsResponse>(
-            StatusCodes.Status200OK,
-            "User successfully retrieved",
-            _mapper.Map<UserDetailsResponse>(user)
-        );
+        return _mapper.Map<UserDetailsResponse>(user);
     }
 
     public async Task<ServiceResponse<UserDetailsResponse>> GetByUsernameAsync(string username)
@@ -169,6 +162,7 @@ public class UserService : IUserService
 
     public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetTripsForUser(int id)
     {
+        /*
         var user = await this.GetByIdAsync(id);
         if (!user.Success)
         {
@@ -185,5 +179,7 @@ public class UserService : IUserService
             $"Trips for user with ID {id} were successfully retrieved.",
             tripsResponse.Data
         );
+        */
+        return new ServiceResponse<IEnumerable<TripDetailsResponse>>(200, "ok");
     }
 }

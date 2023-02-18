@@ -1,3 +1,4 @@
+using ErrorOr;
 using Microsoft.AspNetCore.JsonPatch;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
@@ -34,7 +35,7 @@ public interface IUserService
     ///     </item>
     /// </list>
     /// </remarks>
-    public Task<ServiceResponse<UserDetailsResponse>> GetByIdAsync(int id);
+    public Task<ErrorOr<UserDetailsResponse>> GetByIdAsync(int id);
 
     /// <summary>
     /// Asynchronously retrieves list of all users.
