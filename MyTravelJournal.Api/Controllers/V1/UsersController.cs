@@ -47,7 +47,14 @@ public class UsersController : ControllerBase
     {
         var response = await _userService.GetByIdAsync(id);
 
-        return StatusCode(response.Status.Code, response);
+        //return StatusCode(response.Status.Code, response);
+        return response.MatchFirst(
+            Ok,
+            _ => Problem(
+                statusCode: StatusCodes.Status404NotFound,
+                title: "User with this ID was not found"
+            )
+        );
     }
 
     /// <summary>
