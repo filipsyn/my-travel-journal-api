@@ -10,5 +10,9 @@ public static class Errors
             code: "User.NotFound",
             description: "User was not found"
         );
+
+        public static Error DatabaseConcurrencyError => Error.Conflict(
+            code: "Database.ConcurrencyConflict"
+        );
     }
 }
