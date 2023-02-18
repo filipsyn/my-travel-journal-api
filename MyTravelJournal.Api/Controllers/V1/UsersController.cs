@@ -11,7 +11,7 @@ namespace MyTravelJournal.Api.Controllers.V1;
 [ApiController]
 [Route(ApiRoutes.User.ControllerUrl)]
 [Produces("application/json")]
-public class UsersController : ControllerBase
+public class UsersController : BaseApiController
 {
     private readonly IUserService _userService;
 
@@ -48,7 +48,7 @@ public class UsersController : ControllerBase
         var response = await _userService.GetByIdAsync(id);
 
         //return StatusCode(response.Status.Code, response);
-        return response.MatchFirst(
+        return response.Match(
             Ok,
             _ => Problem(
                 statusCode: StatusCodes.Status404NotFound,
@@ -68,11 +68,15 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status409Conflict)]
-    public async Task<ActionResult<int>> Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         var response = await _userService.DeleteByIdAsync(id);
 
-        return StatusCode(response.Status.Code, response);
+        //return StatusCode(response.Status.Code, response);
+        return response.Match(
+            result => Ok(),
+            Problem
+        );
     }
 
     /// <summary>Performs partial update of specific user's data.</summary>

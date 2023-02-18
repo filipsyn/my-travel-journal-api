@@ -130,9 +130,10 @@ public class UserService : IUserService
     }
 
 
-    public async Task<ServiceResponse<UserDetailsResponse>> DeleteByIdAsync(int id)
+    public async Task<ErrorOr<Deleted>> DeleteByIdAsync(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
+        /*
         if (user is null)
         {
             return new ServiceResponse<UserDetailsResponse>(
@@ -140,7 +141,6 @@ public class UserService : IUserService
                 "User with this ID was not found."
             );
         }
-
 
         try
         {
@@ -158,6 +158,20 @@ public class UserService : IUserService
             StatusCodes.Status200OK,
             "User was successfully deleted."
         );
+        */
+        if (user is null)
+            return Errors.User.NotFound;
+
+        try
+        {
+            await _userRepository.DeleteAsync(id);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return Errors.User.DatabaseConcurrencyError;
+        }
+
+        return Result.Deleted;
     }
 
     public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetTripsForUser(int id)
