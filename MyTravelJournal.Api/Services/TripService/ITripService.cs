@@ -13,7 +13,7 @@ public interface ITripService
 
     public Task<ErrorOr<Created>> CreateAsync(CreateTripRequest request);
 
-    public Task<ServiceResponse<TripDetailsResponse>>
+    public Task<ErrorOr<Updated>>
         UpdateAsync(JsonPatchDocument<UpdateTripRequest> request, int id);
 
     public Task<ServiceResponse<TripDetailsResponse>> DeleteAsync(int id);

@@ -50,12 +50,17 @@ public class TripsController : BaseApiController
     }
 
     [HttpPatch(ApiRoutes.Trip.Update)]
-    public async Task<ActionResult<ServiceResponse<TripDetailsResponse>>> Update(
+    public async Task<IActionResult> Update(
         JsonPatchDocument<UpdateTripRequest> request, int id)
     {
         var response = await _tripService.UpdateAsync(request, id);
 
-        return StatusCode(response.Status.Code, response);
+        //return StatusCode(response.Status.Code, response);
+        return response.Match(
+            result => Ok(result),
+            Problem
+        );
+        
     }
 
     [HttpDelete(ApiRoutes.Trip.Delete)]

@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
@@ -53,44 +54,30 @@ public class TripService : ITripService
         return Result.Created;
     }
 
-    public async Task<ServiceResponse<TripDetailsResponse>> UpdateAsync(JsonPatchDocument<UpdateTripRequest> request,
+    public async Task<ErrorOr<Updated>> UpdateAsync(JsonPatchDocument<UpdateTripRequest> request,
         int id)
     {
         var trip = await _tripRepository.GetByIdAsync(id);
 
         if (trip is null)
-        {
-            return new ServiceResponse<TripDetailsResponse>(StatusCodes.Status404NotFound,
-                "Trip with this ID was not found.");
-        }
+            return Error.NotFound("Trip was not found");
 
         var patchedTrip = _mapper.Map<JsonPatchDocument<Trip>>(request);
         if (patchedTrip is null)
-        {
-            return new ServiceResponse<TripDetailsResponse>(
-                StatusCodes.Status500InternalServerError,
-                "Mapping of objects was unsuccessfully."
-            );
-        }
-
+            return Error.Failure("Failed mapping");
+        
         patchedTrip.ApplyTo(trip);
 
         try
         {
             await _tripRepository.UpdateAsync(trip);
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch (DbUpdateConcurrencyException)
         {
-            return new ServiceResponse<TripDetailsResponse>(
-                StatusCodes.Status409Conflict,
-                ex.ToString()
-            );
+            return Error.Conflict("Database concurrency exception");
         }
 
-        return new ServiceResponse<TripDetailsResponse>(
-            StatusCodes.Status200OK,
-            "Trip was successfully updated."
-        );
+        return Result.Updated;
     }
 
     public async Task<ServiceResponse<TripDetailsResponse>> DeleteAsync(int id)
