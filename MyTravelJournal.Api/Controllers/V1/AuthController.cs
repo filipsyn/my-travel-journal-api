@@ -21,7 +21,7 @@ public class AuthController : BaseApiController
     {
         var response = await _authService.RegisterAsync(request);
         return response.Match(
-            result => Ok(result),
+            _ => NoContent(),
             Problem
         );
     }
