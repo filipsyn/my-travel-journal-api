@@ -16,7 +16,7 @@ public interface ITripService
     public Task<ErrorOr<Updated>>
         UpdateAsync(JsonPatchDocument<UpdateTripRequest> request, int id);
 
-    public Task<ServiceResponse<TripDetailsResponse>> DeleteAsync(int id);
+    public Task<ErrorOr<Deleted>> DeleteAsync(int id);
 
     public Task<ServiceResponse<List<TripDetailsResponse>>> GetTripsByUser(int userId);
 }

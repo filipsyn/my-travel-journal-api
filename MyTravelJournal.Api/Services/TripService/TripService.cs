@@ -65,7 +65,7 @@ public class TripService : ITripService
         var patchedTrip = _mapper.Map<JsonPatchDocument<Trip>>(request);
         if (patchedTrip is null)
             return Error.Failure("Failed mapping");
-        
+
         patchedTrip.ApplyTo(trip);
 
         try
@@ -80,24 +80,18 @@ public class TripService : ITripService
         return Result.Updated;
     }
 
-    public async Task<ServiceResponse<TripDetailsResponse>> DeleteAsync(int id)
+    public async Task<ErrorOr<Deleted>> DeleteAsync(int id)
     {
         try
         {
             await _tripRepository.DeleteAsync(id);
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch (DbUpdateConcurrencyException)
         {
-            return new ServiceResponse<TripDetailsResponse>(
-                StatusCodes.Status409Conflict,
-                ex.ToString()
-            );
+            return Error.Conflict("Database concurrency exception");
         }
 
-        return new ServiceResponse<TripDetailsResponse>(
-            StatusCodes.Status200OK,
-            "Trip was successfully deleted."
-        );
+        return Result.Deleted;
     }
 
     public async Task<ServiceResponse<List<TripDetailsResponse>>> GetTripsByUser(int userId)

@@ -60,14 +60,16 @@ public class TripsController : BaseApiController
             result => Ok(result),
             Problem
         );
-        
     }
 
     [HttpDelete(ApiRoutes.Trip.Delete)]
-    public async Task<ActionResult<ServiceResponse<TripDetailsResponse>>> Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         var response = await _tripService.DeleteAsync(id);
 
-        return StatusCode(response.Status.Code, response);
+        return response.Match(
+            _ => NoContent(),
+            Problem
+        );
     }
 }
