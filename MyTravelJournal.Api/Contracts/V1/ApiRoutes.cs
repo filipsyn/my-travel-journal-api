@@ -19,7 +19,7 @@ public static class ApiRoutes
         public const string DeleteUser = "{id:int}";
 
         public const string UpdateUser = "{id:int}";
-        
+
         public const string GetTripsForUser = "{id:int}/trips";
     }
 

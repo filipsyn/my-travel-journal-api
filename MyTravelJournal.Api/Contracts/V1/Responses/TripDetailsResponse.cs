@@ -9,5 +9,4 @@ public record TripDetailsResponse
     public string Location { get; set; } = string.Empty;
     public DateTime Start { get; set; } = DateTime.Now;
     public DateTime End { get; set; } = DateTime.Now;
-
 }

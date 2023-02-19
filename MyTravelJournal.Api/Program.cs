@@ -35,7 +35,7 @@ builder.Services.AddSwaggerGen(options =>
             Title = "My Travel Journal",
             Description = "REST API for managing information about trips, users and locations",
         });
-        
+
         options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
         {
             Description = "Standard authorization header using the Bearer scheme",
@@ -43,7 +43,7 @@ builder.Services.AddSwaggerGen(options =>
             Name = "Authorization",
             Type = SecuritySchemeType.ApiKey,
         });
-        
+
         options.OperationFilter<SecurityRequirementsOperationFilter>();
 
         var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

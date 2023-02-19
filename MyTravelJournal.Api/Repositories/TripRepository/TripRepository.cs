@@ -28,6 +28,7 @@ public class TripRepository : ITripRepository
     {
         return await _db.Trips.Where(predicate).ToListAsync();
     }
+
     public async Task CreateAsync(Trip trip)
     {
         _db.Trips.Add(trip);
