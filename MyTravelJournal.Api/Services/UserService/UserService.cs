@@ -52,27 +52,22 @@ public class UserService : IUserService
         return _mapper.Map<UserDetailsResponse>(user);
     }
 
-    public async Task<ServiceResponse<string>> CreateAsync(CreateUserRequest request)
+    public async Task<ErrorOr<Created>> CreateAsync(CreateUserRequest request)
     {
         var user = _mapper.Map<User>(request);
+
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
         try
         {
             await _userRepository.CreateAsync(user);
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch (DbUpdateConcurrencyException)
         {
-            return new ServiceResponse<string>(
-                StatusCodes.Status409Conflict,
-                ex.ToString()
-            );
+            return Error.Conflict(description: "Database concurrency exception");
         }
 
-        return new ServiceResponse<string>(
-            StatusCodes.Status200OK,
-            "User was successfully created."
-        );
+        return Result.Created;
     }
 
 

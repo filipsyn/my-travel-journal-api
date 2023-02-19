@@ -122,7 +122,7 @@ public interface IUserService
     ///     </item>
     /// </list>
     /// </remarks>
-    public Task<ServiceResponse<string>> CreateAsync(CreateUserRequest request);
+    public Task<ErrorOr<Created>> CreateAsync(CreateUserRequest request);
 
 
     /// <summary>
