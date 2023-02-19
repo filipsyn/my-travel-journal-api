@@ -37,7 +37,7 @@ public class TripService : ITripService
         return _mapper.Map<TripDetailsResponse>(trip);
     }
 
-    public async Task<ServiceResponse<TripDetailsResponse>> CreateAsync(CreateTripRequest request)
+    public async Task<ErrorOr<Created>> CreateAsync(CreateTripRequest request)
     {
         var trip = _mapper.Map<Trip>(request);
 
@@ -45,18 +45,12 @@ public class TripService : ITripService
         {
             await _tripRepository.CreateAsync(trip);
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch (DbUpdateConcurrencyException)
         {
-            return new ServiceResponse<TripDetailsResponse>(
-                StatusCodes.Status409Conflict,
-                ex.ToString()
-            );
+            return Error.Conflict("Database concurrency exception");
         }
 
-        return new ServiceResponse<TripDetailsResponse>(
-            StatusCodes.Status200OK,
-            "Trip was successfully added."
-        );
+        return Result.Created;
     }
 
     public async Task<ServiceResponse<TripDetailsResponse>> UpdateAsync(JsonPatchDocument<UpdateTripRequest> request,

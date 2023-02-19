@@ -11,7 +11,7 @@ public interface ITripService
 
     public Task<ErrorOr<TripDetailsResponse>> GetByIdAsync(int id);
 
-    public Task<ServiceResponse<TripDetailsResponse>> CreateAsync(CreateTripRequest request);
+    public Task<ErrorOr<Created>> CreateAsync(CreateTripRequest request);
 
     public Task<ServiceResponse<TripDetailsResponse>>
         UpdateAsync(JsonPatchDocument<UpdateTripRequest> request, int id);

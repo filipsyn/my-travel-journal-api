@@ -1,3 +1,4 @@
+using ErrorOr;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MyTravelJournal.Api.Contracts.V1;
@@ -38,11 +39,14 @@ public class TripsController : BaseApiController
     }
 
     [HttpPost(ApiRoutes.Trip.Create)]
-    public async Task<ActionResult<ServiceResponse<TripDetailsResponse>>> Create([FromBody] CreateTripRequest request)
+    public async Task<IActionResult> Create([FromBody] CreateTripRequest request)
     {
         var response = await _tripService.CreateAsync(request);
 
-        return StatusCode(response.Status.Code, response);
+        return response.Match(
+            result => Ok(result),
+            Problem
+        );
     }
 
     [HttpPatch(ApiRoutes.Trip.Update)]
