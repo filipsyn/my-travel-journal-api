@@ -6,6 +6,8 @@ using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Repositories.UserRepository;
 using MyTravelJournal.Api.Services.UserService;
+using ErrorOr;
+using MyTravelJournal.Api.Models;
 
 namespace MyTravelJournal.Api.Services.AuthService;
 
@@ -22,50 +24,27 @@ public class AuthService : IAuthService
         _userRepository = userRepository;
     }
 
-    public async Task<ServiceResponse<string>> RegisterAsync(CreateUserRequest request)
+    public async Task<ErrorOr<Created>> RegisterAsync(CreateUserRequest request)
     {
-        var foundUser = await _userService.GetByUsernameAsync(request.Username);
-        if (foundUser.Success)
-        {
-            return new ServiceResponse<string>(
-                StatusCodes.Status400BadRequest,
-                "User with this username already exists.",
-                false
-            );
-        }
+        var foundUser = await _userRepository.GetByUsernameAsync(request.Username);
 
-        return await _userService.CreateAsync(request);
+        if (foundUser is null)
+            return Error.Conflict(description: "User with this username already exists");
+
+        return Result.Created;
     }
 
-    public async Task<ServiceResponse<string>> LoginAsync(LoginRequest request)
+    public async Task<ErrorOr<string>> LoginAsync(LoginRequest request)
     {
-        var user = await _userService.GetByUsernameAsync(request.Username);
-        if (!user.Success)
-        {
-            return new ServiceResponse<string>(
-                StatusCodes.Status404NotFound,
-                "User with this username doesn't exist."
-            );
-        }
+        var user = await _userRepository.GetByUsernameAsync(request.Username);
 
-        // Authenticate password
+        if (user is null)
+            return Error.Validation(description: "Incorrect credentials.");
+
         if (!await VerifyPasswordAsync(request.Username, request.Password))
-        {
-            return new ServiceResponse<string>(
-                StatusCodes.Status400BadRequest,
-                "Incorrect password"
-            );
-        }
+            return Error.Validation(description: "Incorrect credentials.");
 
-        // Generate JWT token
-        var foundUser = await _userService.GetByUsernameAsync(user.Data!.Username);
-        var token = GenerateJwtToken(foundUser.Data!);
-
-        return new ServiceResponse<string>(
-            StatusCodes.Status200OK,
-            "User successfully logged in.",
-            token
-        );
+        return GenerateJwtToken(user);
     }
 
     private async Task<bool> VerifyPasswordAsync(string username, string password)
@@ -74,7 +53,7 @@ public class AuthService : IAuthService
         return user is not null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
     }
 
-    private string GenerateJwtToken(UserDetailsResponse user)
+    private string GenerateJwtToken(User user)
     {
         var claims = new List<Claim>
         {
