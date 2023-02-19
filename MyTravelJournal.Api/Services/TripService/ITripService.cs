@@ -18,5 +18,5 @@ public interface ITripService
 
     public Task<ErrorOr<Deleted>> DeleteAsync(int id);
 
-    public Task<ServiceResponse<List<TripDetailsResponse>>> GetTripsByUser(int userId);
+    public Task<IEnumerable<TripDetailsResponse>> GetTripsByUser(int userId);
 }

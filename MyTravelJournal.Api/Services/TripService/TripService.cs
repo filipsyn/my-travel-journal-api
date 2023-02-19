@@ -94,15 +94,11 @@ public class TripService : ITripService
         return Result.Deleted;
     }
 
-    public async Task<ServiceResponse<List<TripDetailsResponse>>> GetTripsByUser(int userId)
+    public async Task<IEnumerable<TripDetailsResponse>> GetTripsByUser(int userId)
     {
-        //var trips = await _db.Trips.Where(t => t.UserId == userId).ToListAsync();
-        var trips = await _tripRepository.GetWhereAsync(t => t.UserId == userId);
+        var trips = await _tripRepository
+            .GetWhereAsync(t => t.UserId == userId);
 
-        return new ServiceResponse<List<TripDetailsResponse>>(
-            StatusCodes.Status200OK,
-            "Ok",
-            _mapper.Map<List<TripDetailsResponse>>(trips)
-        );
+        return _mapper.Map<List<TripDetailsResponse>>(trips);
     }
 }
