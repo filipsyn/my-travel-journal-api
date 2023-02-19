@@ -70,7 +70,35 @@ public class TripsController : BaseApiController
         );
     }
 
+    /// <summary>
+    /// Patches information about specific trip
+    /// </summary>
+    /// <param name="request">An object containing info about changed data</param>
+    /// <param name="id">An ID of changed trip</param>
+    /// <remarks>
+    ///     Request has a structure of standard JSON patch request.
+    /// 
+    ///     Following example shows request to change title of trip:
+    ///     
+    ///     ```
+    ///     [
+    ///         {
+    ///             "path" : "/title",
+    ///             "op" : "replace",
+    ///             "value" : "New Title!"
+    ///         }
+    ///     ]
+    ///     ```
+    /// </remarks>
+    /// <response code="204">Trip successfully updated</response>
+    /// <response code="404">Trip was not found</response>
+    /// <response code="409">Error on writing to the database</response>
+    /// <response code="500">Failed mapping of objects</response>
     [HttpPatch(ApiRoutes.Trip.Update)]
+    [ProducesResponseType(typeof(Updated), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Update(
         JsonPatchDocument<UpdateTripRequest> request, int id)
     {
