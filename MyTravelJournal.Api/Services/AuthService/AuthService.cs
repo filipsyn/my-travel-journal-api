@@ -28,7 +28,7 @@ public class AuthService : IAuthService
     {
         var foundUser = await _userRepository.GetByUsernameAsync(request.Username);
 
-        if (foundUser is null)
+        if (foundUser is not null)
             return Error.Conflict(description: "User with this username already exists");
 
         return await _userService.CreateAsync(request);
