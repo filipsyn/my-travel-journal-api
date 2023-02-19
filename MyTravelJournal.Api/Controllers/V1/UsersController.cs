@@ -75,7 +75,7 @@ public class UsersController : BaseApiController
         );
     }
 
-    /// <summary>Performs partial update of specific user's data.</summary>
+    /// <summary>Patches specific user's data.</summary>
     /// <param name="patch">A request body</param>
     /// <param name="id">An ID of updated user</param>
     /// <remarks>
@@ -93,18 +93,18 @@ public class UsersController : BaseApiController
     ///     ]
     ///     ```
     /// </remarks>
-    /// <response code="200">Successfully updated</response>
+    /// <response code="204">Successfully updated</response>
     /// <response code="400">Invalid model state</response>
-    /// <response code="404">Updating not existing user</response>
-    /// <response code="409">Raised error when sending data to database</response>
-    /// <response code="500">Mistake when mapping User to DTO</response>
+    /// <response code="404">User does not exist</response>
+    /// <response code="409">Error on writing to the database</response>
+    /// <response code="500">Error on mapping User to DTO</response>
     /// 
     [HttpPatch(ApiRoutes.User.UpdateUser)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status409Conflict)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(Updated), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateUser([FromBody] JsonPatchDocument<UpdateUserDetailsRequest> patch,
         int id)
     {
