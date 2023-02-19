@@ -31,7 +31,7 @@ public class AuthService : IAuthService
         if (foundUser is null)
             return Error.Conflict(description: "User with this username already exists");
 
-        return Result.Created;
+        return await _userService.CreateAsync(request);
     }
 
     public async Task<ErrorOr<string>> LoginAsync(LoginRequest request)
