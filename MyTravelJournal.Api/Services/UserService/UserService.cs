@@ -31,7 +31,6 @@ public class UserService : IUserService
     }
 
 
-    // public async Task<ServiceResponse<UserDetailsResponse>> GetByIdAsync(int id)
     public async Task<ErrorOr<UserDetailsResponse>> GetByIdAsync(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
