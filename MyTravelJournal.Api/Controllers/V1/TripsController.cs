@@ -51,7 +51,15 @@ public class TripsController : BaseApiController
         );
     }
 
+    /// <summary>
+    /// Creates new trip
+    /// </summary>
+    /// <param name="request">An object containing information about created trip</param>
+    /// <response code="204">Trip was successfully created</response>
+    /// <response code="409">Error on writing to the database</response>
     [HttpPost(ApiRoutes.Trip.Create)]
+    [ProducesResponseType(typeof(Created), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create([FromBody] CreateTripRequest request)
     {
         var response = await _tripService.CreateAsync(request);
