@@ -40,21 +40,17 @@ public class UsersController : BaseApiController
     /// </summary>
     /// <param name="id">An ID of searched user</param>
     /// <response code="200">Returns information about specific user</response>
-    /// <response code="404">User with this ID was not found</response>
+    /// <response code="404">User was not found</response>
     [HttpGet(ApiRoutes.User.GetUserById)]
-    [ProducesResponseType(typeof(ServiceResponse<UserDetailsResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<UserDetailsResponse>> GetById(int id)
+    [ProducesResponseType(typeof(UserDetailsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(int id)
     {
         var response = await _userService.GetByIdAsync(id);
 
-        //return StatusCode(response.Status.Code, response);
         return response.Match(
             Ok,
-            _ => Problem(
-                statusCode: StatusCodes.Status404NotFound,
-                title: "User with this ID was not found"
-            )
+            Problem
         );
     }
 
