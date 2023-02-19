@@ -118,7 +118,7 @@ public class UsersController : BaseApiController
         var response = await _userService.UpdateAsync(patch, id);
 
         return response.Match(
-            result => NoContent(),
+            _ => NoContent(),
             Problem
         );
     }
