@@ -76,12 +76,12 @@ public class UserService : IUserService
         var user = await _userRepository.GetByIdAsync(id);
 
         if (user is null)
-            return Error.NotFound("User not found");
+            return Errors.User.NotFound;
 
         var patchedUser = _mapper.Map<JsonPatchDocument<User>>(patchRequest);
 
         if (patchedUser is null)
-            return Error.Failure("Unsuccessful mapping of objects");
+            return Errors.Common.FaultyMapping;
 
         patchedUser.ApplyTo(user);
 
@@ -91,7 +91,7 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Error.Conflict("Database concurrency conflict");
+            return Errors.Common.DatabaseConcurrencyError;
         }
 
         return Result.Updated;
@@ -111,7 +111,7 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Errors.User.DatabaseConcurrencyError;
+            return Errors.Common.DatabaseConcurrencyError;
         }
 
         return Result.Deleted;
@@ -122,7 +122,7 @@ public class UserService : IUserService
         var user = await _userRepository.GetByIdAsync(id);
 
         if (user is null)
-            return Error.NotFound(description: "User was not found");
+            return Errors.User.NotFound;
 
         var response = await _tripService.GetTripsByUser(id);
         return response.ToList();

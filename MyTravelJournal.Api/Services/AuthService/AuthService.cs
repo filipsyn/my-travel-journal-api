@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MyTravelJournal.Api.Contracts.V1.Requests;
-using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Repositories.UserRepository;
 using MyTravelJournal.Api.Services.UserService;
 using ErrorOr;
@@ -29,7 +28,7 @@ public class AuthService : IAuthService
         var foundUser = await _userRepository.GetByUsernameAsync(request.Username);
 
         if (foundUser is not null)
-            return Error.Conflict(description: "User with this username already exists");
+            return Errors.Auth.UsernameTaken;
 
         return await _userService.CreateAsync(request);
     }
@@ -39,10 +38,10 @@ public class AuthService : IAuthService
         var user = await _userRepository.GetByUsernameAsync(request.Username);
 
         if (user is null)
-            return Error.Validation(description: "Incorrect credentials.");
+            return Errors.Auth.IncorrectCredentials;
 
         if (!await VerifyPasswordAsync(request.Username, request.Password))
-            return Error.Validation(description: "Incorrect credentials.");
+            return Errors.Auth.IncorrectCredentials;
 
         return GenerateJwtToken(user);
     }

@@ -32,7 +32,7 @@ public class TripService : ITripService
         var trip = await _tripRepository.GetByIdAsync(id);
 
         if (trip is null)
-            return Error.NotFound("Trip was not found");
+            return Errors.Trip.NotFound;
 
         return _mapper.Map<TripDetailsResponse>(trip);
     }
@@ -47,7 +47,7 @@ public class TripService : ITripService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Error.Conflict("Database concurrency exception");
+            return Errors.Common.DatabaseConcurrencyError;
         }
 
         return Result.Created;
@@ -59,11 +59,11 @@ public class TripService : ITripService
         var trip = await _tripRepository.GetByIdAsync(id);
 
         if (trip is null)
-            return Error.NotFound("Trip was not found");
+            return Errors.Common.DatabaseConcurrencyError;
 
         var patchedTrip = _mapper.Map<JsonPatchDocument<Trip>>(request);
         if (patchedTrip is null)
-            return Error.Failure("Failed mapping");
+            return Errors.Common.FaultyMapping;
 
         patchedTrip.ApplyTo(trip);
 
@@ -73,7 +73,7 @@ public class TripService : ITripService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Error.Conflict("Database concurrency exception");
+            return Errors.Common.DatabaseConcurrencyError;
         }
 
         return Result.Updated;
@@ -87,7 +87,7 @@ public class TripService : ITripService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Error.Conflict("Database concurrency exception");
+            return Errors.Common.DatabaseConcurrencyError;
         }
 
         return Result.Deleted;

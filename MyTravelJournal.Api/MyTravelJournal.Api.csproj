@@ -52,8 +52,4 @@
       <None Remove="pgdata\**" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Errors" />
-    </ItemGroup>
-
 </Project>
