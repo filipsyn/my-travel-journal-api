@@ -1,9 +1,7 @@
-using ErrorOr;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MyTravelJournal.Api.Contracts.V1;
 using MyTravelJournal.Api.Contracts.V1.Requests;
-using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Services.TripService;
 
 namespace MyTravelJournal.Api.Controllers.V1;
@@ -21,7 +19,7 @@ public class TripsController : BaseApiController
     }
 
     [HttpGet(ApiRoutes.Trip.GetAll)]
-    public async Task<ActionResult<ServiceResponse<IEnumerable<TripDetailsResponse>>>> GetAll()
+    public async Task<IActionResult> GetAll()
     {
         return Ok(await _tripService.GetAllAsync());
     }
