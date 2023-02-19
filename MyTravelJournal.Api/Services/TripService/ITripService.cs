@@ -9,7 +9,7 @@ public interface ITripService
 {
     public Task<IEnumerable<TripDetailsResponse>> GetAllAsync();
 
-    public Task<ServiceResponse<TripDetailsResponse>> GetByIdAsync(int id);
+    public Task<ErrorOr<TripDetailsResponse>> GetByIdAsync(int id);
 
     public Task<ServiceResponse<TripDetailsResponse>> CreateAsync(CreateTripRequest request);
 

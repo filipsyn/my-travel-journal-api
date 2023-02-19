@@ -10,7 +10,7 @@ namespace MyTravelJournal.Api.Controllers.V1;
 [ApiController]
 [Route(ApiRoutes.Trip.ControllerUrl)]
 [Produces("application/json")]
-public class TripsController : ControllerBase
+public class TripsController : BaseApiController
 {
     private readonly ITripService _tripService;
 
@@ -22,16 +22,19 @@ public class TripsController : ControllerBase
     [HttpGet(ApiRoutes.Trip.GetAll)]
     public async Task<ActionResult<ServiceResponse<IEnumerable<TripDetailsResponse>>>> GetAll()
     {
-       return Ok(await _tripService.GetAllAsync());
+        return Ok(await _tripService.GetAllAsync());
     }
 
 
     [HttpGet(ApiRoutes.Trip.GetById)]
-    public async Task<ActionResult<ServiceResponse<TripDetailsResponse>>> GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
         var response = await _tripService.GetByIdAsync(id);
 
-        return StatusCode(response.Status.Code, response);
+        return response.Match(
+            Ok,
+            Problem
+        );
     }
 
     [HttpPost(ApiRoutes.Trip.Create)]
