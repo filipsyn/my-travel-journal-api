@@ -1,3 +1,4 @@
+using ErrorOr;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MyTravelJournal.Api.Contracts.V1;
@@ -31,7 +32,15 @@ public class TripsController : BaseApiController
     }
 
 
+    /// <summary>
+    /// Retrieves information about specific trip
+    /// </summary>
+    /// <param name="id">An ID of searched trip</param>
+    /// <response code="200">Trip successfully retrieved</response>
+    /// <response code="404">Trip not found</response>
     [HttpGet(ApiRoutes.Trip.GetById)]
+    [ProducesResponseType(typeof(TripDetailsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id)
     {
         var response = await _tripService.GetByIdAsync(id);
