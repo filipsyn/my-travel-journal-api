@@ -57,7 +57,7 @@ public class TripsController : BaseApiController
         var response = await _tripService.CreateAsync(request);
 
         return response.Match(
-            result => Ok(result),
+            _ => NoContent(),
             Problem
         );
     }
