@@ -22,9 +22,7 @@ public class TripsController : ControllerBase
     [HttpGet(ApiRoutes.Trip.GetAll)]
     public async Task<ActionResult<ServiceResponse<IEnumerable<TripDetailsResponse>>>> GetAll()
     {
-        var response = await _tripService.GetAllAsync();
-
-        return StatusCode(response.Status.Code, response);
+       return Ok(await _tripService.GetAllAsync());
     }
 
 

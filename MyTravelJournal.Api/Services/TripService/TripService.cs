@@ -5,6 +5,7 @@ using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Repositories.TripRepository;
+using ErrorOr;
 
 namespace MyTravelJournal.Api.Services.TripService;
 
@@ -19,15 +20,11 @@ public class TripService : ITripService
         _tripRepository = tripRepository;
     }
 
-    public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetAllAsync()
+    public async Task<IEnumerable<TripDetailsResponse>> GetAllAsync()
     {
         var trips = await _tripRepository.GetAllAsync();
 
-        return new ServiceResponse<IEnumerable<TripDetailsResponse>>(
-            StatusCodes.Status200OK,
-            "List of trips successfully retrieved.",
-            _mapper.Map<IEnumerable<TripDetailsResponse>>(trips)
-        );
+        return _mapper.Map<IEnumerable<TripDetailsResponse>>(trips);
     }
 
     public async Task<ServiceResponse<TripDetailsResponse>> GetByIdAsync(int id)
@@ -75,7 +72,7 @@ public class TripService : ITripService
         int id)
     {
         var trip = await _tripRepository.GetByIdAsync(id);
-        
+
         if (trip is null)
         {
             return new ServiceResponse<TripDetailsResponse>(StatusCodes.Status404NotFound,
