@@ -77,7 +77,7 @@ public class TripsController : BaseApiController
         var response = await _tripService.UpdateAsync(request, id);
 
         return response.Match(
-            result => Ok(result),
+            _ => NoContent(),
             Problem
         );
     }
