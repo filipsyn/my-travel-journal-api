@@ -23,15 +23,11 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public async Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync()
+    public async Task<IEnumerable<UserDetailsResponse>> GetAllAsync()
     {
         var users = await _userRepository.GetAllAsync();
 
-        return new ServiceResponse<IEnumerable<UserDetailsResponse>>(
-            StatusCodes.Status200OK,
-            "List of users successfully retrieved.",
-            _mapper.Map<IEnumerable<UserDetailsResponse>>(users)
-        );
+        return _mapper.Map<IEnumerable<UserDetailsResponse>>(users);
     }
 
 
@@ -133,32 +129,7 @@ public class UserService : IUserService
     public async Task<ErrorOr<Deleted>> DeleteByIdAsync(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
-        /*
-        if (user is null)
-        {
-            return new ServiceResponse<UserDetailsResponse>(
-                StatusCodes.Status404NotFound,
-                "User with this ID was not found."
-            );
-        }
-
-        try
-        {
-            await _userRepository.DeleteAsync(id);
-        }
-        catch (DbUpdateConcurrencyException ex)
-        {
-            return new ServiceResponse<UserDetailsResponse>(
-                StatusCodes.Status409Conflict,
-                ex.ToString()
-            );
-        }
-
-        return new ServiceResponse<UserDetailsResponse>(
-            StatusCodes.Status200OK,
-            "User was successfully deleted."
-        );
-        */
+        
         if (user is null)
             return Errors.User.NotFound;
 

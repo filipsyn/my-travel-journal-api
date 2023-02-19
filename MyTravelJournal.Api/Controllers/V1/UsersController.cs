@@ -25,13 +25,14 @@ public class UsersController : BaseApiController
     /// </summary>
     /// <response code="200">All users successfully retrieved</response>
     [HttpGet(ApiRoutes.User.GetAllUsers)]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ServiceResponse<IEnumerable<UserDetailsResponse>>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<UserDetailsResponse>>> GetAll()
     {
         var response = await _userService.GetAllAsync();
 
-        return StatusCode(response.Status.Code, response);
+        //return StatusCode(response.Status.Code, response);
+        return Ok(response);
     }
 
     /// <summary>
@@ -74,7 +75,7 @@ public class UsersController : BaseApiController
 
         //return StatusCode(response.Status.Code, response);
         return response.Match(
-            result => Ok(),
+            result => Ok(result),
             Problem
         );
     }

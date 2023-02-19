@@ -60,7 +60,7 @@ public interface IUserService
     ///     </item>
     /// </list>
     /// </remarks>
-    public Task<ServiceResponse<IEnumerable<UserDetailsResponse>>> GetAllAsync();
+    public Task<IEnumerable<UserDetailsResponse>> GetAllAsync();
 
 
     /// <summary>
