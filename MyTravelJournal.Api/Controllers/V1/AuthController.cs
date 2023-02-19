@@ -33,7 +33,16 @@ public class AuthController : BaseApiController
         );
     }
 
+    /// <summary>
+    /// Generates JWT token for user's login session
+    /// </summary>
+    /// <param name="request">An object containing user's credentials</param>
+    /// 
+    /// <response code="200">User successfully logged in</response>
+    /// <response code="400">Incorrect credentials</response>
     [HttpPost(ApiRoutes.Auth.Login)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var response = await _authService.LoginAsync(request);
