@@ -20,7 +20,6 @@ public class AuthController : BaseApiController
     public async Task<IActionResult> Register([FromBody] CreateUserRequest request)
     {
         var response = await _authService.RegisterAsync(request);
-        //return StatusCode(response.Status.Code, response);
         return response.Match(
             result => Ok(result),
             Problem
