@@ -73,7 +73,6 @@ public class UsersController : BaseApiController
     {
         var response = await _userService.DeleteByIdAsync(id);
 
-        //return StatusCode(response.Status.Code, response);
         return response.Match(
             result => Ok(result),
             Problem

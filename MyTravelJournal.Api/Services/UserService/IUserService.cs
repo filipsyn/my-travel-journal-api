@@ -91,7 +91,7 @@ public interface IUserService
     ///     </item>
     /// </list>
     /// </remarks>
-    public Task<ServiceResponse<UserDetailsResponse>> GetByUsernameAsync(string username);
+    public Task<ErrorOr<UserDetailsResponse>> GetByUsernameAsync(string username);
 
 
     /// <summary>

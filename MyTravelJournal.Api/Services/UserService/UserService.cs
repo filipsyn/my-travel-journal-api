@@ -42,22 +42,14 @@ public class UserService : IUserService
         return _mapper.Map<UserDetailsResponse>(user);
     }
 
-    public async Task<ServiceResponse<UserDetailsResponse>> GetByUsernameAsync(string username)
+    public async Task<ErrorOr<UserDetailsResponse>> GetByUsernameAsync(string username)
     {
         var user = await _userRepository.GetByUsernameAsync(username);
+        
         if (user is null)
-        {
-            return new ServiceResponse<UserDetailsResponse>(
-                StatusCodes.Status404NotFound,
-                "User with this username doesn't exist."
-            );
-        }
+            return Errors.User.NotFound;
 
-        return new ServiceResponse<UserDetailsResponse>(
-            StatusCodes.Status200OK,
-            "User successfully found.",
-            _mapper.Map<UserDetailsResponse>(user)
-        );
+        return _mapper.Map<UserDetailsResponse>(user);
     }
 
     public async Task<ServiceResponse<string>> CreateAsync(CreateUserRequest request)
@@ -129,7 +121,7 @@ public class UserService : IUserService
     public async Task<ErrorOr<Deleted>> DeleteByIdAsync(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
-        
+
         if (user is null)
             return Errors.User.NotFound;
 
