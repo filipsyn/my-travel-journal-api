@@ -76,7 +76,6 @@ public class TripsController : BaseApiController
     {
         var response = await _tripService.UpdateAsync(request, id);
 
-        //return StatusCode(response.Status.Code, response);
         return response.Match(
             result => Ok(result),
             Problem
