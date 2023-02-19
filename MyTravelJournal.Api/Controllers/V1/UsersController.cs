@@ -24,15 +24,14 @@ public class UsersController : BaseApiController
     /// <summary>
     /// Retrieves list of all users.
     /// </summary>
-    /// <response code="200">All users successfully retrieved</response>
+    /// <response code="200">Users successfully retrieved</response>
     [HttpGet(ApiRoutes.User.GetAllUsers)]
+    [ProducesResponseType(typeof(IEnumerable<UserDetailsResponse>), StatusCodes.Status200OK)]
     //[Authorize(Roles = "Admin")]
-    [ProducesResponseType(typeof(ServiceResponse<IEnumerable<UserDetailsResponse>>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<UserDetailsResponse>>> GetAll()
+    public async Task<IActionResult> GetAll()
     {
         var response = await _userService.GetAllAsync();
 
-        //return StatusCode(response.Status.Code, response);
         return Ok(response);
     }
 
