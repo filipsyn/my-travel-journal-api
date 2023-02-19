@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MyTravelJournal.Api.Contracts.V1;
 using MyTravelJournal.Api.Contracts.V1.Requests;
+using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Services.TripService;
 
 namespace MyTravelJournal.Api.Controllers.V1;
@@ -18,7 +19,12 @@ public class TripsController : BaseApiController
         _tripService = tripService;
     }
 
+    /// <summary>
+    /// Retrieves list of all trips
+    /// </summary>
+    /// <response code="200">List successfully retrieved</response>
     [HttpGet(ApiRoutes.Trip.GetAll)]
+    [ProducesResponseType(typeof(IEnumerable<TripDetailsResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
         return Ok(await _tripService.GetAllAsync());
