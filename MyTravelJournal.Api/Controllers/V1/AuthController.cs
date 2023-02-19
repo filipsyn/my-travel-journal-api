@@ -16,7 +16,13 @@ public class AuthController : BaseApiController
         _authService = authService;
     }
 
+    /// <summary>Registers new user</summary>
+    /// <param name="request">An object containing info about new user</param>
+    /// <response code="204">New user successfully created</response>
+    /// <response code="409">Username is taken</response>
     [HttpPost(ApiRoutes.Auth.Register)]
+    [ProducesResponseType(typeof(Created), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Register([FromBody] CreateUserRequest request)
     {
         var response = await _authService.RegisterAsync(request);
