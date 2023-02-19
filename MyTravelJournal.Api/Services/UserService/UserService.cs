@@ -118,26 +118,14 @@ public class UserService : IUserService
         return Result.Deleted;
     }
 
-    public async Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetTripsForUser(int id)
+    public async Task<ErrorOr<IEnumerable<TripDetailsResponse>>> GetTripsForUser(int id)
     {
-        /*
-        var user = await this.GetByIdAsync(id);
-        if (!user.Success)
-        {
-            return new ServiceResponse<IEnumerable<TripDetailsResponse>>(
-                StatusCodes.Status404NotFound,
-                $"User with ID {id} was not found."
-            );
-        }
+        var user = await _userRepository.GetByIdAsync(id);
 
-        var tripsResponse = await _tripService.GetTripsByUser(id);
+        if (user is null)
+            return Error.NotFound(description: "User was not found");
 
-        return new ServiceResponse<IEnumerable<TripDetailsResponse>>(
-            StatusCodes.Status200OK,
-            $"Trips for user with ID {id} were successfully retrieved.",
-            tripsResponse.Data
-        );
-        */
-        return new ServiceResponse<IEnumerable<TripDetailsResponse>>(200, "ok");
+        var response = await _tripService.GetTripsByUser(id);
+        return response.ToList();
     }
 }

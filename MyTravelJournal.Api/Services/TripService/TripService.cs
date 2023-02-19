@@ -98,7 +98,8 @@ public class TripService : ITripService
     {
         var trips = await _tripRepository
             .GetWhereAsync(t => t.UserId == userId);
+            
 
-        return _mapper.Map<List<TripDetailsResponse>>(trips);
+        return _mapper.Map<IEnumerable<TripDetailsResponse>>(trips);
     }
 }

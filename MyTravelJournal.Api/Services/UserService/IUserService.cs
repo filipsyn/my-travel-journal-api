@@ -1,3 +1,4 @@
+using System.Collections;
 using ErrorOr;
 using Microsoft.AspNetCore.JsonPatch;
 using MyTravelJournal.Api.Contracts.V1.Requests;
@@ -203,5 +204,5 @@ public interface IUserService
     /// </remarks>
     public Task<ErrorOr<Deleted>> DeleteByIdAsync(int id);
 
-    public Task<ServiceResponse<IEnumerable<TripDetailsResponse>>> GetTripsForUser(int id);
+    public Task<ErrorOr<IEnumerable<TripDetailsResponse>>> GetTripsForUser(int id);
 }

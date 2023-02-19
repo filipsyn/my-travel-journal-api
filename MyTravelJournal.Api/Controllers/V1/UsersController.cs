@@ -1,3 +1,4 @@
+using ErrorOr;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -124,10 +125,13 @@ public class UsersController : BaseApiController
     }
 
     [HttpGet(ApiRoutes.User.GetTripsForUser)]
-    public async Task<ActionResult<ServiceResponse<List<TripDetailsResponse>>>> GetTripsFor(int id)
+    public async Task<IActionResult> GetTripsFor(int id)
     {
         var response = await _userService.GetTripsForUser(id);
 
-        return StatusCode(response.Status.Code, response);
+        return response.Match(
+            Ok,
+            Problem
+        );
     }
 }
