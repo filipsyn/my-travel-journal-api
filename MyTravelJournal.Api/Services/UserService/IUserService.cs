@@ -1,4 +1,3 @@
-using System.Collections;
 using ErrorOr;
 using Microsoft.AspNetCore.JsonPatch;
 using MyTravelJournal.Api.Contracts.V1.Requests;

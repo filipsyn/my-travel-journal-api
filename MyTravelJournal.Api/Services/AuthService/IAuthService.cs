@@ -1,5 +1,4 @@
 using MyTravelJournal.Api.Contracts.V1.Requests;
-using MyTravelJournal.Api.Contracts.V1.Responses;
 using ErrorOr;
 
 namespace MyTravelJournal.Api.Services.AuthService;
