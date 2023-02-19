@@ -164,7 +164,7 @@ public interface IUserService
     ///     </item>
     /// </list>
     /// </remarks>
-    public Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(
+    public Task<ErrorOr<Updated>> UpdateAsync(
         JsonPatchDocument<UpdateUserDetailsRequest> patchRequest, int id);
 
 

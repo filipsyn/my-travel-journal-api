@@ -45,7 +45,7 @@ public class UserService : IUserService
     public async Task<ErrorOr<UserDetailsResponse>> GetByUsernameAsync(string username)
     {
         var user = await _userRepository.GetByUsernameAsync(username);
-        
+
         if (user is null)
             return Errors.User.NotFound;
 
@@ -71,26 +71,18 @@ public class UserService : IUserService
     }
 
 
-    public async Task<ServiceResponse<UserDetailsResponse>> UpdateAsync(
+    public async Task<ErrorOr<Updated>> UpdateAsync(
         JsonPatchDocument<UpdateUserDetailsRequest> patchRequest, int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
+
         if (user is null)
-        {
-            return new ServiceResponse<UserDetailsResponse>(
-                StatusCodes.Status404NotFound,
-                "User with this ID was not found."
-            );
-        }
+            return Error.NotFound("User not found");
 
         var patchedUser = _mapper.Map<JsonPatchDocument<User>>(patchRequest);
+
         if (patchedUser is null)
-        {
-            return new ServiceResponse<UserDetailsResponse>(
-                StatusCodes.Status500InternalServerError,
-                "Mapping of objects was unsuccessful."
-            );
-        }
+            return Error.Failure("Unsuccessful mapping of objects");
 
         patchedUser.ApplyTo(user);
 
@@ -98,18 +90,12 @@ public class UserService : IUserService
         {
             await _userRepository.UpdateAsync(user);
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch (DbUpdateConcurrencyException)
         {
-            return new ServiceResponse<UserDetailsResponse>(
-                StatusCodes.Status409Conflict,
-                ex.ToString()
-            );
+            return Error.Conflict("Database concurrency conflict");
         }
 
-        return new ServiceResponse<UserDetailsResponse>(
-            StatusCodes.Status200OK,
-            "User was successfully updated."
-        );
+        return Result.Updated;
     }
 
 

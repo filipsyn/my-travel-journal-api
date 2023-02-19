@@ -109,7 +109,7 @@ public class UsersController : BaseApiController
     [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<string>> UpdateUser([FromBody] JsonPatchDocument<UpdateUserDetailsRequest> patch,
+    public async Task<IActionResult> UpdateUser([FromBody] JsonPatchDocument<UpdateUserDetailsRequest> patch,
         int id)
     {
         if (!ModelState.IsValid)
@@ -117,7 +117,10 @@ public class UsersController : BaseApiController
 
         var response = await _userService.UpdateAsync(patch, id);
 
-        return StatusCode(response.Status.Code, response);
+        return response.Match(
+            result => NoContent(),
+            Problem
+        );
     }
 
     [HttpGet(ApiRoutes.User.GetTripsForUser)]
