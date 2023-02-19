@@ -110,7 +110,15 @@ public class TripsController : BaseApiController
         );
     }
 
+    /// <summary>
+    /// Deletes specific trip
+    /// </summary>
+    /// <param name="id">An ID of a trip</param>
+    /// <response code="204">Trip successfully deleted</response>
+    /// <response code="409">Error on writing to the database</response>
     [HttpDelete(ApiRoutes.Trip.Delete)]
+    [ProducesResponseType(typeof(Deleted), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Delete(int id)
     {
         var response = await _tripService.DeleteAsync(id);
