@@ -119,7 +119,15 @@ public class UsersController : BaseApiController
         );
     }
 
+    /// <summary>
+    /// Retrieves list of trips for selected user
+    /// </summary>
+    /// <param name="id">An ID of user</param>
+    /// <response code="200">List successfully retrieved</response>
+    /// <response code="404">User not found</response>
     [HttpGet(ApiRoutes.User.GetTripsForUser)]
+    [ProducesResponseType(typeof(IEnumerable<TripDetailsResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetTripsFor(int id)
     {
         var response = await _userService.GetTripsForUser(id);
