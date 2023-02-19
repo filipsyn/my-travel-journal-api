@@ -58,19 +58,19 @@ public class UsersController : BaseApiController
     /// Deletes specific user
     /// </summary>
     /// <param name="id">ID of user to be deleted</param>
-    /// <response code="200">Successfully deleted user</response>
-    /// <response code="404">User with this ID wasn't found</response>
-    /// <response code="409">Raised error when sending data to database</response>
+    /// <response code="204">Successfully deleted</response>
+    /// <response code="404">User was not found</response>
+    /// <response code="409">Error on writing to the database</response>
     [HttpDelete(ApiRoutes.User.DeleteUser)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ServiceResponse<>), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Deleted), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Delete(int id)
     {
         var response = await _userService.DeleteByIdAsync(id);
 
         return response.Match(
-            result => Ok(result),
+            _ => NoContent(),
             Problem
         );
     }
