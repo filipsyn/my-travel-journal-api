@@ -1,3 +1,4 @@
+using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using MyTravelJournal.Api.Contracts.V1;
 using MyTravelJournal.Api.Contracts.V1.Requests;
