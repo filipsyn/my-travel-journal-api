@@ -6,7 +6,7 @@ using MyTravelJournal.Api.Contracts.V1.Responses;
 using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Repositories.UserRepository;
 using MyTravelJournal.Api.Services.TripService;
-using ErrorOr;
+using MyTravelJournal.Api.Exceptions;
 
 namespace MyTravelJournal.Api.Services.UserService;
 
@@ -31,27 +31,27 @@ public class UserService : IUserService
     }
 
 
-    public async Task<ErrorOr<UserDetailsResponse>> GetByIdAsync(int id)
+    public async Task<UserDetailsResponse> GetByIdAsync(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
 
         if (user is null)
-            return Errors.User.NotFound;
+            throw new NotFoundException("User was not found");
 
         return _mapper.Map<UserDetailsResponse>(user);
     }
 
-    public async Task<ErrorOr<UserDetailsResponse>> GetByUsernameAsync(string username)
+    public async Task<UserDetailsResponse> GetByUsernameAsync(string username)
     {
         var user = await _userRepository.GetByUsernameAsync(username);
 
         if (user is null)
-            return Errors.User.NotFound;
+            throw new NotFoundException("User was not found");
 
         return _mapper.Map<UserDetailsResponse>(user);
     }
 
-    public async Task<ErrorOr<Created>> CreateAsync(CreateUserRequest request)
+    public async Task CreateAsync(CreateUserRequest request)
     {
         var user = _mapper.Map<User>(request);
 
@@ -63,25 +63,23 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Error.Conflict(description: "Database concurrency exception");
+            throw new ConflictException("Conflict occured while adding to database");
         }
-
-        return Result.Created;
     }
 
 
-    public async Task<ErrorOr<Updated>> UpdateAsync(
+    public async Task UpdateAsync(
         JsonPatchDocument<UpdateUserDetailsRequest> patchRequest, int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
 
         if (user is null)
-            return Errors.User.NotFound;
+            throw new NotFoundException("User was not found");
 
         var patchedUser = _mapper.Map<JsonPatchDocument<User>>(patchRequest);
 
         if (patchedUser is null)
-            return Errors.Common.FaultyMapping;
+            throw new Exception("Error occured while mapping objects");
 
         patchedUser.ApplyTo(user);
 
@@ -91,19 +89,18 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Errors.Common.DatabaseConcurrencyError;
+            throw new ConflictException("Conflict occured while adding to database");
         }
 
-        return Result.Updated;
     }
 
 
-    public async Task<ErrorOr<Deleted>> DeleteByIdAsync(int id)
+    public async Task DeleteByIdAsync(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
 
         if (user is null)
-            return Errors.User.NotFound;
+            throw new NotFoundException("User was not found");
 
         try
         {
@@ -111,18 +108,16 @@ public class UserService : IUserService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Errors.Common.DatabaseConcurrencyError;
+            throw new ConflictException("Conflict occured while adding to database");
         }
-
-        return Result.Deleted;
     }
 
-    public async Task<ErrorOr<IEnumerable<TripDetailsResponse>>> GetTripsForUser(int id)
+    public async Task<IEnumerable<TripDetailsResponse>> GetTripsForUser(int id)
     {
         var user = await _userRepository.GetByIdAsync(id);
 
         if (user is null)
-            return Errors.User.NotFound;
+            throw new NotFoundException("User was not found");
 
         var response = await _tripService.GetTripsByUser(id);
         return response.ToList();

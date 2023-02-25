@@ -5,7 +5,7 @@ namespace MyTravelJournal.Api.Services.AuthService;
 
 public interface IAuthService
 {
-    public Task<ErrorOr<Created>> RegisterAsync(CreateUserRequest request);
+    public Task RegisterAsync(CreateUserRequest request);
 
-    public Task<ErrorOr<string>> LoginAsync(LoginRequest request);
+    public Task<string> LoginAsync(LoginRequest request);
 }

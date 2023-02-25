@@ -9,13 +9,13 @@ public interface ITripService
 {
     public Task<IEnumerable<TripDetailsResponse>> GetAllAsync();
 
-    public Task<ErrorOr<TripDetailsResponse>> GetByIdAsync(int id);
+    public Task<TripDetailsResponse> GetByIdAsync(int id);
 
-    public Task<ErrorOr<Created>> CreateAsync(CreateTripRequest request);
+    public Task CreateAsync(CreateTripRequest request);
 
-    public Task<ErrorOr<Updated>> UpdateAsync(JsonPatchDocument<UpdateTripRequest> request, int id);
+    public Task UpdateAsync(JsonPatchDocument<UpdateTripRequest> request, int id);
 
-    public Task<ErrorOr<Deleted>> DeleteAsync(int id);
+    public Task DeleteAsync(int id);
 
     public Task<IEnumerable<TripDetailsResponse>> GetTripsByUser(int userId);
 }

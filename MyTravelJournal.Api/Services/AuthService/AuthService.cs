@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Repositories.UserRepository;
 using MyTravelJournal.Api.Services.UserService;
-using ErrorOr;
+using MyTravelJournal.Api.Exceptions;
 using MyTravelJournal.Api.Models;
 
 namespace MyTravelJournal.Api.Services.AuthService;
@@ -23,25 +23,25 @@ public class AuthService : IAuthService
         _userRepository = userRepository;
     }
 
-    public async Task<ErrorOr<Created>> RegisterAsync(CreateUserRequest request)
+    public async Task RegisterAsync(CreateUserRequest request)
     {
         var foundUser = await _userRepository.GetByUsernameAsync(request.Username);
 
         if (foundUser is not null)
-            return Errors.Auth.UsernameTaken;
+            throw new NotFoundException("User was not found");
 
-        return await _userService.CreateAsync(request);
+        await _userService.CreateAsync(request);
     }
 
-    public async Task<ErrorOr<string>> LoginAsync(LoginRequest request)
+    public async Task<string> LoginAsync(LoginRequest request)
     {
         var user = await _userRepository.GetByUsernameAsync(request.Username);
 
         if (user is null)
-            return Errors.Auth.IncorrectCredentials;
+            throw new ValidationException("Incorrect credentials");
 
         if (!await VerifyPasswordAsync(request.Username, request.Password))
-            return Errors.Auth.IncorrectCredentials;
+            throw new ValidationException("Incorrect credentials");
 
         return GenerateJwtToken(user);
     }

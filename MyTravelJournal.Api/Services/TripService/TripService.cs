@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using MyTravelJournal.Api.Contracts.V1.Requests;
 using MyTravelJournal.Api.Contracts.V1.Responses;
+using MyTravelJournal.Api.Exceptions;
 using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Repositories.TripRepository;
-using ErrorOr;
 
 namespace MyTravelJournal.Api.Services.TripService;
 
@@ -27,17 +27,17 @@ public class TripService : ITripService
         return _mapper.Map<IEnumerable<TripDetailsResponse>>(trips);
     }
 
-    public async Task<ErrorOr<TripDetailsResponse>> GetByIdAsync(int id)
+    public async Task<TripDetailsResponse> GetByIdAsync(int id)
     {
         var trip = await _tripRepository.GetByIdAsync(id);
 
         if (trip is null)
-            return Errors.Trip.NotFound;
+            throw new NotFoundException("Trip was not found");
 
         return _mapper.Map<TripDetailsResponse>(trip);
     }
 
-    public async Task<ErrorOr<Created>> CreateAsync(CreateTripRequest request)
+    public async Task CreateAsync(CreateTripRequest request)
     {
         var trip = _mapper.Map<Trip>(request);
 
@@ -47,23 +47,21 @@ public class TripService : ITripService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Errors.Common.DatabaseConcurrencyError;
+            throw new ConflictException("Conflict occured while adding to database");
         }
-
-        return Result.Created;
     }
 
-    public async Task<ErrorOr<Updated>> UpdateAsync(JsonPatchDocument<UpdateTripRequest> request,
+    public async Task UpdateAsync(JsonPatchDocument<UpdateTripRequest> request,
         int id)
     {
         var trip = await _tripRepository.GetByIdAsync(id);
 
         if (trip is null)
-            return Errors.Common.DatabaseConcurrencyError;
+            throw new NotFoundException("Trip was not found");
 
         var patchedTrip = _mapper.Map<JsonPatchDocument<Trip>>(request);
         if (patchedTrip is null)
-            return Errors.Common.FaultyMapping;
+            throw new Exception("Error occured while mapping objects");
 
         patchedTrip.ApplyTo(trip);
 
@@ -73,13 +71,11 @@ public class TripService : ITripService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Errors.Common.DatabaseConcurrencyError;
+            throw new ConflictException("Conflict occured while adding to database");
         }
-
-        return Result.Updated;
     }
 
-    public async Task<ErrorOr<Deleted>> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
         try
         {
@@ -87,10 +83,8 @@ public class TripService : ITripService
         }
         catch (DbUpdateConcurrencyException)
         {
-            return Errors.Common.DatabaseConcurrencyError;
+            throw new ConflictException("Conflict occured while adding to database");
         }
-
-        return Result.Deleted;
     }
 
     public async Task<IEnumerable<TripDetailsResponse>> GetTripsByUser(int userId)
