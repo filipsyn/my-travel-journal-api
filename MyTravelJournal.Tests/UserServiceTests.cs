@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Moq;
@@ -83,5 +85,47 @@ public class UserServiceTests
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() => _sut.GetByIdAsync(userId));
+    }
+
+    [Fact]
+    public async Task GetAllAsync_ShouldReturnAllUsers_WhenTheyAreInDatabase()
+    {
+        // Arrange
+        var expected = new List<User>()
+        {
+            new User
+            {
+                Username = "homie.s",
+                FirstName = "Homer",
+                LastName = "Simpson"
+            },
+            new User
+            {
+                Username = "marjorie.b.s",
+                FirstName = "Marge",
+                LastName = "Simpson",
+            },
+            new User
+            {
+                Username = "bartman",
+                FirstName = "Bart",
+                LastName = "Simpson"
+            },
+            new User
+            {
+                Username = "sax_is_life",
+                FirstName = "Lisa",
+                LastName = "Simpson",
+            }
+        };
+        _userRepoMock
+            .Setup(x => x.GetAllAsync())
+            .ReturnsAsync(expected);
+
+        // Act
+        var actual = await _sut.GetAllAsync();
+
+        // Assert
+        Assert.Equal(expected.Count, actual.Count());
     }
 }
