@@ -4,15 +4,15 @@
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=MyTravelJournal_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/home/filip/.cache/JetBrains/Rider2022.3/resharper-host/temp/Rider/vAny/CoverageData/_MyTravelJournal.-463269692/Snapshot/snapshot.utdcvr</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=203976a1_002D87c8_002D46a2_002D8cff_002D5477a218684a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetByIdAsync_ShouldReturnUser_WhenUserExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=203976a1_002D87c8_002D46a2_002D8cff_002D5477a218684a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetByIdAsync_ShouldReturnUser_WhenUserExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::0C794067-A7E4-4591-A43E-DD52B7E8D91B::net6.0::MyTravelJournal.Tests.UserServiceTests.GetByIdAsync_ShouldReturnUser_WhenUserExists&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::0C794067-A7E4-4591-A43E-DD52B7E8D91B::net6.0::MyTravelJournal.Tests.UserServiceTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4b0382f8_002Daef2_002D4d31_002D80e0_002Df00971b14038/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Solution /&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6cb8712a_002D403a_002D43fb_002Db576_002D3db933ffaa64/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6cb8712a_002D403a_002D43fb_002Db576_002D3db933ffaa64/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Solution /&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
