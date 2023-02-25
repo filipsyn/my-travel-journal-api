@@ -1,7 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Moq;
 using MyTravelJournal.Api.Contracts.V1.Responses;
+using MyTravelJournal.Api.Exceptions;
 using MyTravelJournal.Api.Models;
 using MyTravelJournal.Api.Repositories.UserRepository;
 using MyTravelJournal.Api.Services.TripService;
@@ -66,5 +68,20 @@ public class UserServiceTests
         Assert.Equal(expected.Email, actual.Email);
         Assert.Equal(expected.Role, actual.Role);
         Assert.Equal(expected.Username, actual.Username);
+    }
+
+
+    [Fact]
+    public async Task GetByIdAsync_ShouldThrow_WhenUserDoesntExist()
+    {
+        // Arrange
+        var userId = 0;
+
+        _userRepoMock
+            .Setup(x => x.GetByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(null as Func<User?>);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<NotFoundException>(() => _sut.GetByIdAsync(userId));
     }
 }
