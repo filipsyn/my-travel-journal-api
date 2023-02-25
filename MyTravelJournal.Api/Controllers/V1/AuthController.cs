@@ -1,4 +1,3 @@
-using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using MyTravelJournal.Api.Contracts.V1;
 using MyTravelJournal.Api.Contracts.V1.Requests;
@@ -8,7 +7,7 @@ namespace MyTravelJournal.Api.Controllers.V1;
 
 [ApiController]
 [Route(ApiRoutes.Auth.ControllerUrl)]
-public class AuthController : BaseApiController
+public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
 
@@ -22,15 +21,13 @@ public class AuthController : BaseApiController
     /// <response code="204">New user successfully created</response>
     /// <response code="409">Username is taken</response>
     [HttpPost(ApiRoutes.Auth.Register)]
-    [ProducesResponseType(typeof(Created), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Register([FromBody] CreateUserRequest request)
     {
-        var response = await _authService.RegisterAsync(request);
-        return response.Match(
-            _ => NoContent(),
-            Problem
-        );
+        await _authService.RegisterAsync(request);
+
+        return NoContent();
     }
 
     /// <summary>
@@ -42,14 +39,11 @@ public class AuthController : BaseApiController
     /// <response code="400">Incorrect credentials</response>
     [HttpPost(ApiRoutes.Auth.Login)]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var response = await _authService.LoginAsync(request);
-        //return StatusCode(response.Status.Code, response);
-        return response.Match(
-            Ok,
-            Problem
-        );
+
+        return Ok(response);
     }
 }

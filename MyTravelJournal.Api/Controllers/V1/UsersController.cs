@@ -1,5 +1,3 @@
-using ErrorOr;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MyTravelJournal.Api.Contracts.V1;
@@ -12,7 +10,7 @@ namespace MyTravelJournal.Api.Controllers.V1;
 [ApiController]
 [Route(ApiRoutes.User.ControllerUrl)]
 [Produces("application/json")]
-public class UsersController : BaseApiController
+public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
 
@@ -43,15 +41,12 @@ public class UsersController : BaseApiController
     /// <response code="404">User was not found</response>
     [HttpGet(ApiRoutes.User.GetUserById)]
     [ProducesResponseType(typeof(UserDetailsResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id)
     {
         var response = await _userService.GetByIdAsync(id);
 
-        return response.Match(
-            Ok,
-            Problem
-        );
+        return Ok(response);
     }
 
     /// <summary>
@@ -62,17 +57,14 @@ public class UsersController : BaseApiController
     /// <response code="404">User was not found</response>
     /// <response code="409">Error on writing to the database</response>
     [HttpDelete(ApiRoutes.User.DeleteUser)]
-    [ProducesResponseType(typeof(Deleted), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Delete(int id)
     {
-        var response = await _userService.DeleteByIdAsync(id);
+        await _userService.DeleteByIdAsync(id);
 
-        return response.Match(
-            _ => NoContent(),
-            Problem
-        );
+        return NoContent();
     }
 
     /// <summary>Patches specific user's data.</summary>
@@ -100,23 +92,20 @@ public class UsersController : BaseApiController
     /// <response code="500">Error on mapping User to DTO</response>
     /// 
     [HttpPatch(ApiRoutes.User.UpdateUser)]
-    [ProducesResponseType(typeof(Updated), StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status409Conflict)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateUser([FromBody] JsonPatchDocument<UpdateUserDetailsRequest> patch,
         int id)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var response = await _userService.UpdateAsync(patch, id);
+        await _userService.UpdateAsync(patch, id);
 
-        return response.Match(
-            _ => NoContent(),
-            Problem
-        );
+        return NoContent();
     }
 
     /// <summary>
@@ -127,14 +116,11 @@ public class UsersController : BaseApiController
     /// <response code="404">User not found</response>
     [HttpGet(ApiRoutes.User.GetTripsForUser)]
     [ProducesResponseType(typeof(IEnumerable<TripDetailsResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetTripsFor(int id)
     {
         var response = await _userService.GetTripsForUser(id);
 
-        return response.Match(
-            Ok,
-            Problem
-        );
+        return Ok(response);
     }
 }
