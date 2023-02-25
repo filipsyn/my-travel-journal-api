@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyTravelJournal.Api.Data;
+using MyTravelJournal.Api.Extensions;
 using MyTravelJournal.Api.Repositories.TripRepository;
 using MyTravelJournal.Api.Repositories.UserRepository;
 using MyTravelJournal.Api.Services.AuthService;
