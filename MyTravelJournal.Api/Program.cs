@@ -19,10 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Adding password to connection string
 // Value is saved in the .NET secrets vault
 var connectionStringBuilder =
-    new NpgsqlConnectionStringBuilder(builder.Configuration.GetConnectionString("MyTravelJournal"))
-    {
-        Password = builder.Configuration["DbPassword"],
-    };
+    new NpgsqlConnectionStringBuilder(builder.Configuration.GetConnectionString("MyTravelJournal"));
 var connectionString = connectionStringBuilder.ConnectionString;
 
 builder.Services.AddControllers()
